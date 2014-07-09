@@ -1,0 +1,12 @@
+#if ($session)
+    <ul class="item-details">
+        <li>
+            <dl class="dates">
+                <dt>Created:</dt>
+                <dd>$created</dd>
+            </dl>
+        </li>
+    </ul>
+#else
+    No session.
+#end

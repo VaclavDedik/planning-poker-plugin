@@ -1,0 +1,30 @@
+<html>
+<head>
+    <title>Action Alpha Success</title>
+</head>
+
+<body>
+
+<div style="background: #FFFFFF">
+    <table class="jiraform maxWidth">
+        <tr>
+            <td class="jiraformheader">
+                <h3 class="formtitle">Action Alpha Success</h3>
+            </td>
+        </tr>
+        <tr>
+            <td class="jiraformbody">
+                This page is what the Action Alpha action class shows when success is returned.
+            </td>
+        </tr>
+
+        <tr>
+            <td class="jiraformbody">
+                The raw current parameter value is: $action.getMyfirstparameter().
+            </td>
+        </tr>
+    </table>
+    <br>
+
+</body>
+</html>

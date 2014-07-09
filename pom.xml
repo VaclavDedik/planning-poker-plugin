@@ -1,23 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.redhat.engineering.plugins</groupId>
     <artifactId>planning-poker</artifactId>
     <version>1.0-SNAPSHOT</version>
-
     <organization>
-        <name>Example Company</name>
-        <url>http://www.example.com/</url>
+        <name>Red Hat, Inc.</name>
+        <url>http://www.redhat.com</url>
     </organization>
-
     <name>planning-poker</name>
     <description>This is the com.redhat.engineering.plugins:planning-poker plugin for Atlassian JIRA.</description>
     <packaging>atlassian-plugin</packaging>
-
     <dependencies>
         <dependency>
             <groupId>com.atlassian.jira</groupId>
@@ -41,7 +35,6 @@
             <version>4.10</version>
             <scope>test</scope>
         </dependency>
-
         <!-- WIRED TEST RUNNER DEPENDENCIES -->
         <dependency>
             <groupId>com.atlassian.plugins</groupId>
@@ -56,14 +49,24 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
+            <groupId>com.atlassian.templaterenderer</groupId>
+            <artifactId>atlassian-template-renderer-api</artifactId>
+            <version>1.5.1</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>14.0.1</version>
+        </dependency>
+        <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
             <version>2.2.2-atlassian-1</version>
         </dependency>
-
-		<!-- Uncomment to use TestKit in your project. Details at https://bitbucket.org/atlassian/jira-testkit -->
-		<!-- You can read more about TestKit at https://developer.atlassian.com/display/JIRADEV/Plugin+Tutorial+-+Smarter+integration+testing+with+TestKit -->
-		<!--
+        <!-- Uncomment to use TestKit in your project. Details at https://bitbucket.org/atlassian/jira-testkit -->
+        <!-- You can read more about TestKit at https://developer.atlassian.com/display/JIRADEV/Plugin+Tutorial+-+Smarter+integration+testing+with+TestKit -->
+        <!--
 		<dependency>
 			<groupId>com.atlassian.jira.tests</groupId>
 			<artifactId>jira-testkit-client</artifactId>
@@ -71,8 +74,13 @@
 			<scope>test</scope>
 		</dependency>
 		-->
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-all</artifactId>
+            <version>1.8.5</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
-
     <build>
         <plugins>
             <plugin>
@@ -83,8 +91,8 @@
                 <configuration>
                     <productVersion>${jira.version}</productVersion>
                     <productDataVersion>${jira.version}</productDataVersion>
-					<!-- Uncomment to install TestKit backdoor in JIRA. -->
-					<!--
+                    <!-- Uncomment to install TestKit backdoor in JIRA. -->
+                    <!--
 					<pluginArtifacts>
 						<pluginArtifact>
 							<groupId>com.atlassian.jira.tests</groupId>
@@ -104,13 +112,11 @@
             </plugin>
         </plugins>
     </build>
-
     <properties>
         <jira.version>6.2.7</jira.version>
         <amps.version>5.0.3</amps.version>
         <plugin.testrunner.version>1.2.0</plugin.testrunner.version>
-		<!-- TestKit version 5.x for JIRA 5.x, 6.x for JIRA 6.x -->
-		<testkit.version>5.2.26</testkit.version>
+        <!-- TestKit version 5.x for JIRA 5.x, 6.x for JIRA 6.x -->
+        <testkit.version>5.2.26</testkit.version>
     </properties>
-
 </project>

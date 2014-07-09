@@ -1,32 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
 <atlassian-plugin key="${project.groupId}.${project.artifactId}" name="${project.name}" plugins-version="2">
     <plugin-info>
         <description>${project.description}</description>
         <version>${project.version}</version>
-        <vendor name="${project.organization.name}" url="${project.organization.url}" />
+        <vendor name="${project.organization.name}" url="${project.organization.url}"/>
         <param name="plugin-icon">images/pluginIcon.png</param>
         <param name="plugin-logo">images/pluginLogo.png</param>
     </plugin-info>
 
     <!-- add our i18n resource -->
     <resource type="i18n" name="i18n" location="planning-poker"/>
-    
+
     <!-- add our web resources -->
     <web-resource key="planning-poker-resources" name="planning-poker Web Resources">
         <dependency>com.atlassian.auiplugin:ajs</dependency>
-        
         <resource type="download" name="planning-poker.css" location="/css/planning-poker.css"/>
         <resource type="download" name="planning-poker.js" location="/js/planning-poker.js"/>
         <resource type="download" name="images/" location="/images"/>
-
         <context>planning-poker</context>
     </web-resource>
-    
-    <!-- publish our component -->
-    <component key="myPluginComponent" class="com.redhat.engineering.plugins.MyPluginComponentImpl" public="true">
-        <interface>com.redhat.engineering.plugins.MyPluginComponent</interface>
-    </component>
-    
+
     <!-- import from the product container -->
     <component-import key="applicationProperties" interface="com.atlassian.sal.api.ApplicationProperties" />
-    
+    <component-import key="templateRenderer" interface="com.atlassian.templaterenderer.TemplateRenderer" />
+    <component-import key="loginUriProvider" interface="com.atlassian.sal.api.auth.LoginUriProvider" />
+    <component-import key="pluginSettingsFactory" interface="com.atlassian.sal.api.pluginsettings.PluginSettingsFactory" />
+
+    <!-- components -->
+    <component key="sessionService" class="com.redhat.engineering.plugins.services.SessionService" />
+
+    <!-- web items -->
+    <web-item name="Planning Poker" i18n-name-key="planning-poker.name" key="planning-poker-link" section="operations-operations" weight="1000">
+        <description key="planning-poker-link.description">The Planning Poker Plugin</description>
+        <label key="planning-poker.label"></label>
+        <link linkId="planning-poker-link">/secure/PlanningPokerAction!default.jspa?key=${issue.key}</link>
+        <styleClass>trigger-dialog</styleClass>
+    </web-item>
+
+    <!-- web pannels -->
+    <web-panel key="planning-poker-panel" location="atl.jira.view.issue.right.context"
+               class="com.redhat.engineering.plugins.panels.PlanningPokerPanel">
+        <label>Planning poker session</label>
+    </web-panel>
+
+    <!-- webworks -->
+    <webwork1 key="planning-poker-webwork" name="Planning Poker" i18n-name-key="planning-poker.name">
+        <description key="planning-poker.description">Planning Poker Plugin</description>
+        <actions>
+            <action name="com.redhat.engineering.plugins.actions.PlanningPokerAction" alias="PlanningPokerAction">
+                <view name="input">/views/input.vm</view>
+                <view name="error">/views/error.vm</view>
+                <view name="success">/views/success.vm</view>
+            </action>
+        </actions>
+    </webwork1>
 </atlassian-plugin>
