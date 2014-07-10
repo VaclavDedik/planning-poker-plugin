@@ -4,15 +4,15 @@
     <meta name="decorator" content="issueaction" />
 </head>
 <body>
-<form action="PlanningPokerAction.jspa" id="create-poker-session" class="aui" method="post">
+<form action="PokerSession.jspa" id="create-poker-session" class="aui" method="post">
 
     <input type="hidden" name="key" value="${key}" />
     <div class="buttons-container form-footer">
         <div class="buttons">
             <input accesskey="s" class="button" id="poker-session-submit"
-                   name="Create New Session" title="Press Ctrl+Alt+s to submit this form"
-                   type="submit" value="Create New Session">
-            <a accesskey="`" class="cancel" href="/browse/${key}" id="schedule-issue-cancel"
+                   name="Create Session" title="Press Ctrl+Alt+s to submit this form"
+                   type="submit" value="Create Session">
+            <a accesskey="`" class="cancel" href="/browse/${key}" id="new-session-cancel"
                title="Press Ctrl+Alt+` to cancel">Cancel</a>
         </div>
     </div>

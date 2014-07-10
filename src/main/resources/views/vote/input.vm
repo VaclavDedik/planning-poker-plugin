@@ -1,0 +1,21 @@
+<html>
+<head>
+    <title>Vote</title>
+    <meta name="decorator" content="issueaction" />
+</head>
+<body>
+<form action="PokerVote.jspa" id="vote-poker" class="aui" method="post">
+
+    <input type="hidden" name="key" value="${key}" />
+    <div class="buttons-container form-footer">
+        <div class="buttons">
+            <input accesskey="s" class="button" id="poker-vote-submit"
+                   name="Vote" title="Press Ctrl+Alt+s to submit this form"
+                   type="submit" value="Vote">
+            <a accesskey="`" class="cancel" href="/browse/${key}" id="vote-poker-cancel"
+               title="Press Ctrl+Alt+` to cancel">Cancel</a>
+        </div>
+    </div>
+</form>
+</body>
+</html>

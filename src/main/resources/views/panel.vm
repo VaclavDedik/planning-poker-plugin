@@ -1,9 +1,31 @@
 #if ($session)
-    <ul class="item-details">
+    <ul class="item-details" id="poker-session-details">
         <li>
+            <dl>
+                <dt>Author:</dt>
+                <dd>
+                    <span id="author-val" class="view-issue-field">$pokerComponent.getAuthorHtml($session)</span>
+                </dd>
+            </dl>
             <dl class="dates">
                 <dt>Created:</dt>
-                <dd>$created</dd>
+                <dd>$pokerComponent.getCreated($session)</dd>
+            </dl>
+            <dl class="votes">
+                <dt>Votes:</dt>
+                <dd>
+                    <a id="poker-view-voter-list" href="#" title="View Poker Voters">
+                        <span id="poker-vote-data" class="aui-badge vote-state-off">0</span>
+                    </a>
+                    <a id="poker-vote" class="trigger-dialog"
+                       href="${baseurl}/secure/PokerVote!default.jspa?key=$session.issue.key">Vote</a>
+                </dd>
+            </dl>
+            <dl class="score">
+                <dt>Score:</dt>
+                <dd>
+                    <b>5</b>
+                </dd>
             </dl>
         </li>
     </ul>

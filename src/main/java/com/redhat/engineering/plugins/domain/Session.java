@@ -1,10 +1,11 @@
 package com.redhat.engineering.plugins.domain;
 
-import com.atlassian.crowd.embedded.api.User;
 import com.atlassian.jira.issue.Issue;
+import com.atlassian.jira.user.ApplicationUser;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author vdedik@redhat.com
@@ -15,7 +16,7 @@ public class Session implements Serializable {
 
     private Date created;
 
-    private User author;
+    private ApplicationUser author;
 
     public Date getCreated() {
         return created;
@@ -25,11 +26,11 @@ public class Session implements Serializable {
         this.created = created;
     }
 
-    public User getAuthor() {
+    public ApplicationUser getAuthor() {
         return author;
     }
 
-    public void setAuthor(User author) {
+    public void setAuthor(ApplicationUser author) {
         this.author = author;
     }
 

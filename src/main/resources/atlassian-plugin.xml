@@ -31,26 +31,34 @@
     <component key="sessionService" class="com.redhat.engineering.plugins.services.SessionService" />
 
     <!-- web items -->
-    <web-item name="Planning Poker" i18n-name-key="planning-poker.name" key="planning-poker-link" section="operations-operations" weight="1000">
-        <description key="planning-poker-link.description">The Planning Poker Plugin</description>
-        <label key="planning-poker.label"></label>
-        <link linkId="planning-poker-link">/secure/PlanningPokerAction!default.jspa?key=${issue.key}</link>
+    <web-item name="New Poker Session" i18n-name-key="new-poker-link.name" key="new-poker-link"
+              section="operations-operations" weight="1000">
+        <label key="new-poker-link.label">Create Poker Session</label>
+        <link linkId="new-poker-link-id">/secure/PokerSession!default.jspa?key=${issue.key}</link>
         <styleClass>trigger-dialog</styleClass>
     </web-item>
 
     <!-- web pannels -->
     <web-panel key="planning-poker-panel" location="atl.jira.view.issue.right.context"
                class="com.redhat.engineering.plugins.panels.PlanningPokerPanel">
-        <label>Planning poker session</label>
+        <label>Planning Poker Session</label>
     </web-panel>
 
     <!-- webworks -->
-    <webwork1 key="planning-poker-webwork" name="Planning Poker" i18n-name-key="planning-poker.name">
-        <description key="planning-poker.description">Planning Poker Plugin</description>
+    <webwork1 key="new-poker-webwork" name="New Poker Session" i18n-name-key="new-poker-webwork.name">
         <actions>
-            <action name="com.redhat.engineering.plugins.actions.PlanningPokerAction" alias="PlanningPokerAction">
-                <view name="input">/views/input.vm</view>
-                <view name="error">/views/error.vm</view>
+            <action name="com.redhat.engineering.plugins.actions.SessionAction" alias="PokerSession">
+                <view name="input">/views/session/input.vm</view>
+                <view name="error">/views/vote/error.vm</view>
+                <view name="success">/views/success.vm</view>
+            </action>
+        </actions>
+    </webwork1>
+    <webwork1 key="poker-vote-webwork" name="Planning Poker Vote" i18n-name-key="poker-vote-webwork.name">
+        <actions>
+            <action name="com.redhat.engineering.plugins.actions.VoteAction" alias="PokerVote">
+                <view name="input">/views/vote/input.vm</view>
+                <view name="error">/views/vote/error.vm</view>
                 <view name="success">/views/success.vm</view>
             </action>
         </actions>
