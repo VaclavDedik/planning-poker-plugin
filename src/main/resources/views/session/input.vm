@@ -1,3 +1,19 @@
+#macro(dateTimePopup $inputId $inputButton $dateTimeFormat $timeFormat)
+<script language="javascript" >
+    Calendar.setup({
+        firstDay : 1,
+        inputField : '$inputId',
+        button : '$inputButton',
+        align : 'Br',
+        singleClick : true,
+        showsTime : true,
+        useISO8601WeekNumbers : false,
+        ifFormat : '$dateTimeFormat',
+        timeFormat : '$timeFormat'
+    });
+</script>
+#end
+
 <html>
 <head>
     <title>Create new planning poker session for issue ${key}</title>
@@ -5,8 +21,46 @@
 </head>
 <body>
 <form action="PokerSession.jspa" id="create-poker-session" class="aui" method="post">
+    <div class="form-body">
+        <h2 class="dialog-title">Create New Planning Poker Session</h2>
+        <div class="content">
+            <div class="field-group aui-field-datepicker">
+                <label for="session-start">Start<span class="aui-icon icon-required">Required</span></label>
+                <input class="text medium-field" id="start" name="start" type="text" value="">
+                <a href="#" id="start-trigger" title="Select a date" tabindex="-1">
+                    <span class="aui-icon icon-date">Select a date</span>
+                </a>
+            </div>
+            #dateTimePopup("start" "start-trigger" $dateTimeFormat $timeFormat)
+            <div class="field-group aui-field-datepicker">
+                <label for="session-end">End<span class="aui-icon icon-required">Required</span></label>
+                <input class="text medium-field" id="end" name="end" type="text" value="">
+                <a href="#" id="end-trigger" title="Select a date" tabindex="-1">
+                    <span class="aui-icon icon-date">Select a date</span>
+                </a>
+            </div>
+            #dateTimePopup("end" "end-trigger" $dateTimeFormat $timeFormat)
+            <div class="field-group">
+                <label for="notifyUserList">Notify Users</label>
+                <script language="JavaScript">
+                    function openMultiWindow(element)
+                    {
+                        var vWinUsers = window.open('$baseurl/secure/popups/UserPickerBrowser.jspa?formName=jiraform&multiSelect=true&element=' + element, 'UserPicker', 'status=yes,resizable=yes,top=100,left=200,width=700,height=750,scrollbars=yes');
+                        vWinUsers.opener = self;
+                        vWinUsers.focus();
+                    }
+                </script>
+                <textarea id="notifyUserList" name="notifyUserList" class="textarea" cols="40" rows="3"/>
+                <a href="javascript:openMultiWindow('notifyUserList');">
+                    <span class="aui-icon icon-userpicker" title="Select a user(s)"></span>
+                </a>
+            </div>
+        </div>
+        <div class="hidden">
+            <input type="hidden" name="key" value="${key}" />
+        </div>
+    </div>
 
-    <input type="hidden" name="key" value="${key}" />
     <div class="buttons-container form-footer">
         <div class="buttons">
             <input accesskey="s" class="button" id="poker-session-submit"

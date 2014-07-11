@@ -3,20 +3,18 @@ package com.redhat.engineering.plugins.domain;
 import com.atlassian.jira.issue.Issue;
 import com.atlassian.jira.user.ApplicationUser;
 
-import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 
 /**
  * @author vdedik@redhat.com
  */
-public class Session implements Serializable {
+public class Session {
 
     private Issue issue;
-
     private Date created;
-
     private ApplicationUser author;
+    private Date start;
+    private Date end;
 
     public Date getCreated() {
         return created;
@@ -40,5 +38,21 @@ public class Session implements Serializable {
 
     public void setIssue(Issue issue) {
         this.issue = issue;
+    }
+
+    public Date getStart() {
+        return start;
+    }
+
+    public void setStart(Date start) {
+        this.start = start;
+    }
+
+    public Date getEnd() {
+        return end;
+    }
+
+    public void setEnd(Date end) {
+        this.end = end;
     }
 }

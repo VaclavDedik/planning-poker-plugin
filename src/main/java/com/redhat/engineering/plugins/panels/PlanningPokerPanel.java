@@ -17,12 +17,14 @@ import com.atlassian.templaterenderer.TemplateRenderer;
 import com.google.common.collect.Maps;
 import com.redhat.engineering.plugins.domain.Session;
 import com.redhat.engineering.plugins.services.SessionService;
+import com.redhat.engineering.plugins.services.VoteService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.util.Date;
 import java.util.Map;
 
 /**
@@ -32,6 +34,7 @@ public class PlanningPokerPanel implements WebPanel {
     private static final Logger log = LoggerFactory.getLogger(PlanningPokerPanel.class);
 
     private final SessionService sessionService;
+    private final VoteService voteService;
     private final TemplateRenderer templateRenderer;
     private final DateTimeFormatterFactory dateTimeFormatterFactory;
     private final UserFormats userFormats;
@@ -40,8 +43,10 @@ public class PlanningPokerPanel implements WebPanel {
 
     public PlanningPokerPanel(SessionService sessionService, TemplateRenderer templateRenderer,
                               DateTimeFormatterFactory dateTimeFormatterFactory, UserFormats userFormats,
-                              AvatarService avatarService, JiraAuthenticationContext authContext) {
+                              AvatarService avatarService, JiraAuthenticationContext authContext,
+                              VoteService voteService) {
         this.sessionService = sessionService;
+        this.voteService = voteService;
         this.templateRenderer = templateRenderer;
         this.dateTimeFormatterFactory = dateTimeFormatterFactory;
         this.userFormats = userFormats;
@@ -74,10 +79,9 @@ public class PlanningPokerPanel implements WebPanel {
         writer.write(getHtml(context));
     }
 
-    public String getCreated(Session session) {
+    public String formatDate(Date date) {
         DateTimeFormatter dateTimeFormatter = dateTimeFormatterFactory.formatter().forLoggedInUser();
-        String created = dateTimeFormatter.withStyle(DateTimeStyle.COMPLETE).format(session.getCreated());
-        return created;
+        return dateTimeFormatter.withStyle(DateTimeStyle.COMPLETE).format(date);
     }
 
     public String getAuthorHtml(Session session) {
@@ -85,6 +89,14 @@ public class PlanningPokerPanel implements WebPanel {
         params.put("avatarURL", getAvatarURL(session.getAuthor()));
         UserFormatter userFormatter = userFormats.formatter("avatarFullNameHover");
         return userFormatter.formatUserkey(session.getAuthor().getKey(), "poker-author", params);
+    }
+
+    public Integer getVotesSize(Session session) {
+        return voteService.getVoteValsBySession(session).size();
+    }
+
+    public boolean isVoter(Session session) {
+        return voteService.isVoter(session, authContext.getUser());
     }
 
     public String getAvatarURL(ApplicationUser user) {

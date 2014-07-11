@@ -29,6 +29,7 @@
 
     <!-- components -->
     <component key="sessionService" class="com.redhat.engineering.plugins.services.SessionService" />
+    <component key="voteService" class="com.redhat.engineering.plugins.services.VoteService" />
 
     <!-- web items -->
     <web-item name="New Poker Session" i18n-name-key="new-poker-link.name" key="new-poker-link"
@@ -59,6 +60,7 @@
             <action name="com.redhat.engineering.plugins.actions.VoteAction" alias="PokerVote">
                 <view name="input">/views/vote/input.vm</view>
                 <view name="error">/views/vote/error.vm</view>
+                <view name="viewVotes">/views/vote/viewVotes.vm</view>
                 <view name="success">/views/success.vm</view>
             </action>
         </actions>

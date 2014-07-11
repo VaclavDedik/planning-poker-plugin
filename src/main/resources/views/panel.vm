@@ -1,34 +1,59 @@
 #if ($session)
-    <ul class="item-details" id="poker-session-details">
-        <li>
-            <dl>
-                <dt>Author:</dt>
-                <dd>
-                    <span id="author-val" class="view-issue-field">$pokerComponent.getAuthorHtml($session)</span>
-                </dd>
-            </dl>
-            <dl class="dates">
-                <dt>Created:</dt>
-                <dd>$pokerComponent.getCreated($session)</dd>
-            </dl>
-            <dl class="votes">
-                <dt>Votes:</dt>
-                <dd>
-                    <a id="poker-view-voter-list" href="#" title="View Poker Voters">
-                        <span id="poker-vote-data" class="aui-badge vote-state-off">0</span>
-                    </a>
-                    <a id="poker-vote" class="trigger-dialog"
-                       href="${baseurl}/secure/PokerVote!default.jspa?key=$session.issue.key">Vote</a>
-                </dd>
-            </dl>
-            <dl class="score">
-                <dt>Score:</dt>
-                <dd>
-                    <b>5</b>
-                </dd>
-            </dl>
-        </li>
-    </ul>
+    #if ($pokerComponent.isVoter($session))
+        #set ($voteState = "vote-state-on")
+        #set ($voteLabel = "Edit Vote")
+    #else
+        #set ($voteState = "vote-state-off")
+        #set ($voteLabel = "Vote")
+    #end
+
+<ul class="item-details" id="poker-session-author">
+    <li class="people-details">
+        <dl>
+            <dt>Author:</dt>
+            <dd>
+                <span id="author-val" class="view-issue-field">$pokerComponent.getAuthorHtml($session)</span>
+            </dd>
+        </dl>
+</ul>
+<ul class="item-details" id="poker-session-dates">
+    <li>
+        <dl class="dates">
+            <dt>Created:</dt>
+            <dd>$pokerComponent.formatDate($session.created)</dd>
+        </dl>
+        <dl class="dates">
+            <dt>Start:</dt>
+            <dd>$pokerComponent.formatDate($session.start)</dd>
+        </dl>
+        <dl class="dates">
+            <dt>End:</dt>
+            <dd>$pokerComponent.formatDate($session.end)</dd>
+        </dl>
+    </li>
+</ul>
+<ul class="item-details" id="poker-session-votes">
+    <li>
+        <dl class="votes">
+            <dt>Votes:</dt>
+            <dd>
+                <a id="poker-view-voter-list" href="#" title="View Poker Voters">
+                    <span id="poker-vote-data" class="aui-badge $voteState"
+                            >$pokerComponent.getVotesSize($session)</span>
+                </a>
+                <a id="poker-vote" class="trigger-dialog"
+                   href="${baseurl}/secure/PokerVote!default.jspa?key=$session.issue.key">$voteLabel</a>
+            </dd>
+        </dl>
+        <dl class="score">
+            <dt>Result:</dt>
+            <dd>
+                <a id="poker-vote" class="trigger-dialog"
+                   href="${baseurl}/secure/PokerVote!viewVotes.jspa?key=$session.issue.key">View Votes</a>
+            </dd>
+        </dl>
+    </li>
+</ul>
 #else
-    No session.
+No session.
 #end

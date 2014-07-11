@@ -1,0 +1,24 @@
+<html>
+<head>
+    <title>View Votes</title>
+    <meta name="decorator" content="issueaction" />
+</head>
+<body>
+    <div class="form-body">
+        <h2 class="dialog-title">View Votes</h2>
+        <dl>
+            #foreach($vote in $action.votes)
+                <dt>$vote.voter.name</dt>
+                <dd>$vote.value</dd>
+            #end
+        </dl>
+    </div>
+
+    <div class="buttons-container form-footer">
+        <div class="buttons">
+            <a accesskey="`" class="cancel" href="/browse/${key}" id="view-vote-poker-cancel"
+               title="Press Ctrl+Alt+` to cancel">Cancel</a>
+        </div>
+    </div>
+</body>
+</html>

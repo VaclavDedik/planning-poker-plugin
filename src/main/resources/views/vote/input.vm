@@ -5,8 +5,16 @@
 </head>
 <body>
 <form action="PokerVote.jspa" id="vote-poker" class="aui" method="post">
+    <div class="form-body">
+        <h2 class="dialog-title">Vote</h2>
+        <div>
+            <input type="text" name="voteVal" class="text" />
+        </div>
+        <div class="hidden">
+            <input type="hidden" name="key" value="${key}" />
+        </div>
+    </div>
 
-    <input type="hidden" name="key" value="${key}" />
     <div class="buttons-container form-footer">
         <div class="buttons">
             <input accesskey="s" class="button" id="poker-vote-submit"

@@ -8,7 +8,7 @@ import com.atlassian.jira.user.ApplicationUser;
 public class Vote {
     private Session session;
     private ApplicationUser voter;
-    private Integer value;
+    private String value;
 
     public Session getSession() {
         return session;
@@ -26,11 +26,11 @@ public class Vote {
         this.voter = voter;
     }
 
-    public Integer getValue() {
+    public String getValue() {
         return value;
     }
 
-    public void setValue(Integer value) {
+    public void setValue(String value) {
         this.value = value;
     }
 }

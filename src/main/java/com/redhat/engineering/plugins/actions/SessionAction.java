@@ -1,6 +1,9 @@
 package com.redhat.engineering.plugins.actions;
 
 import com.atlassian.jira.bc.issue.IssueService;
+import com.atlassian.jira.datetime.DateTimeFormatter;
+import com.atlassian.jira.datetime.DateTimeFormatterFactory;
+import com.atlassian.jira.datetime.DateTimeStyle;
 import com.atlassian.jira.issue.Issue;
 import com.atlassian.jira.security.JiraAuthenticationContext;
 import com.atlassian.jira.user.ApplicationUser;
@@ -21,15 +24,19 @@ public class SessionAction extends JiraWebActionSupport {
     private final IssueService issueService;
     private final JiraAuthenticationContext authContext;
     private final SessionService sessionService;
+    private final DateTimeFormatterFactory dateTimeFormatterFactory;
 
     // properties
     private String key;
+    private String start;
+    private String end;
 
     public SessionAction(IssueService issueService, JiraAuthenticationContext authContext,
-                               SessionService sessionService) {
+                         SessionService sessionService, DateTimeFormatterFactory dateTimeFormatterFactory) {
         this.issueService = issueService;
         this.authContext = authContext;
         this.sessionService = sessionService;
+        this.dateTimeFormatterFactory = dateTimeFormatterFactory;
     }
 
     public String getKey() {
@@ -38,6 +45,22 @@ public class SessionAction extends JiraWebActionSupport {
 
     public void setKey(String key) {
         this.key = key;
+    }
+
+    public String getStart() {
+        return start;
+    }
+
+    public void setStart(String start) {
+        this.start = start;
+    }
+
+    public String getEnd() {
+        return end;
+    }
+
+    public void setEnd(String end) {
+        this.end = end;
     }
 
     @Override
@@ -53,10 +76,14 @@ public class SessionAction extends JiraWebActionSupport {
 
     @Override
     public String doExecute() throws Exception {
+        DateTimeFormatter dateTimeFormatter = dateTimeFormatterFactory.formatter()
+                .forLoggedInUser().withStyle(DateTimeStyle.COMPLETE);
         Session session = new Session();
         session.setAuthor(getCurrentUser());
         session.setCreated(new Date());
         session.setIssue(getIssueObject());
+        session.setStart(dateTimeFormatter.parse(getStart()));
+        session.setEnd(dateTimeFormatter.parse(getEnd()));
         sessionService.save(session);
 
         return SUCCESS;
