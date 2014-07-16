@@ -56,6 +56,9 @@ public class VoteAction extends JiraWebActionSupport {
         if (session == null) {
             return ERROR;
         }
+        if (voteService.isVoter(session, getCurrentUser())) {
+            setVoteVal(voteService.getVoteVal(session, getCurrentUser()));
+        }
 
         return INPUT;
     }

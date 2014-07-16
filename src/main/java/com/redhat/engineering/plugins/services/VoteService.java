@@ -79,8 +79,11 @@ public class VoteService extends AbstractPokerService {
     }
 
     public boolean isVoter(Session session, ApplicationUser user) {
-        Object vote = pluginSettings.get(getIssueStoreKey(session.getIssue()) + "." + user.getKey());
-        return vote != null;
+        return getVoteVal(session, user) != null;
+    }
+
+    public String getVoteVal(Session session, ApplicationUser user) {
+        return (String) pluginSettings.get(getIssueStoreKey(session.getIssue()) + "." + user.getKey());
     }
 
     private <T> List<T> getList(String storeKey) {
