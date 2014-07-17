@@ -7,7 +7,6 @@ import com.atlassian.jira.datetime.DateTimeStyle;
 import com.atlassian.jira.issue.Issue;
 import com.atlassian.jira.security.JiraAuthenticationContext;
 import com.atlassian.jira.user.ApplicationUser;
-import com.atlassian.jira.web.action.JiraWebActionSupport;
 import com.redhat.engineering.plugins.domain.Session;
 import com.redhat.engineering.plugins.services.SessionService;
 import org.slf4j.Logger;
@@ -18,7 +17,7 @@ import java.util.Date;
 /**
  * @author vdedik@redhat.com
  */
-public class SessionAction extends JiraWebActionSupport {
+public class SessionAction extends AbstractAction {
     private static final Logger log = LoggerFactory.getLogger(SessionAction.class);
 
     private final IssueService issueService;
@@ -86,6 +85,7 @@ public class SessionAction extends JiraWebActionSupport {
         session.setEnd(dateTimeFormatter.parse(getEnd()));
         sessionService.save(session);
 
+        this.addMessage("New Session has been successfully created.");
         return SUCCESS;
     }
 

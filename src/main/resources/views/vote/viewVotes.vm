@@ -16,7 +16,7 @@
 
     <div class="buttons-container form-footer">
         <div class="buttons">
-            <a accesskey="`" class="cancel" href="/browse/${key}" id="view-vote-poker-cancel"
+            <a accesskey="`" class="cancel" href="${baseurl}/browse/${key}" id="view-vote-poker-cancel"
                title="Press Ctrl+Alt+` to cancel">Cancel</a>
         </div>
     </div>

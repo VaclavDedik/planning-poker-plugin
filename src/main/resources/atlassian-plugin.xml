@@ -50,7 +50,7 @@
         <actions>
             <action name="com.redhat.engineering.plugins.actions.SessionAction" alias="PokerSession">
                 <view name="input">/views/session/input.vm</view>
-                <view name="error">/views/vote/error.vm</view>
+                <view name="error">/views/error.vm</view>
                 <view name="success">/views/success.vm</view>
             </action>
         </actions>
@@ -59,7 +59,7 @@
         <actions>
             <action name="com.redhat.engineering.plugins.actions.VoteAction" alias="PokerVote">
                 <view name="input">/views/vote/input.vm</view>
-                <view name="error">/views/vote/error.vm</view>
+                <view name="error">/views/error.vm</view>
                 <view name="viewVotes">/views/vote/viewVotes.vm</view>
                 <view name="success">/views/success.vm</view>
             </action>

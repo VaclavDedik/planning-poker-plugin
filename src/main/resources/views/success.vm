@@ -1,30 +1,25 @@
 <html>
 <head>
-    <title>Action Alpha Success</title>
+    <title>Success</title>
 </head>
-
 <body>
+<div class="form-body">
+    <h3 class="formtitle">Success</h3>
 
-<div style="background: #FFFFFF">
-    <table class="jiraform maxWidth">
-        <tr>
-            <td class="jiraformheader">
-                <h3 class="formtitle">Action Alpha Success</h3>
-            </td>
-        </tr>
-        <tr>
-            <td class="jiraformbody">
-                This page is what the Action Alpha action class shows when success is returned.
-            </td>
-        </tr>
-
-        <tr>
-            <td class="jiraformbody">
-                The raw current parameter value is: $action.getMyfirstparameter().
-            </td>
-        </tr>
-    </table>
-    <br>
-
+    <div>
+        #foreach($message in $messages)
+            <p>$message</p>
+        #end
+    </div>
+</div>
+<script type="text/javascript">
+        #foreach($message in $messages)
+        JIRA.Messages.showMsg("$message", {
+            type: JIRA.Messages.Types.SUCCESS,
+            closeable: true
+        });
+        #end
+    JIRA.Dialog.current.hide();
+</script>
 </body>
 </html>
