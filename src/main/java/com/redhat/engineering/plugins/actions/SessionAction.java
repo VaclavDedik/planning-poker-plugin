@@ -65,6 +65,11 @@ public class SessionAction extends AbstractAction {
     @Override
     public String doDefault() throws Exception {
 
+        if (!authContext.isLoggedInUser()) {
+            addErrorMessage("You must be logged in to be able to create new session.");
+            return ERROR;
+        }
+
         Issue issue = getIssueObject();
         if (issue == null) {
             return ERROR;
@@ -74,9 +79,45 @@ public class SessionAction extends AbstractAction {
     }
 
     @Override
+    public void doValidation() {
+        DateTimeFormatter dateTimeFormatter = dateTimeFormatterFactory.formatter()
+                .forLoggedInUser().withStyle(DateTimeStyle.COMPLETE).withSystemZone();
+
+        Date startParsed = null;
+        Date endParsed = null;
+
+        if (getStart() == null || getStart() == "") {
+            this.addError("start", "Start date is required.");
+        } else {
+            try {
+                startParsed = dateTimeFormatter.parse(getStart());
+                Long fiveMin = 5*60*1000L;
+                if (startParsed.getTime() < System.currentTimeMillis() - fiveMin) {
+                    this.addError("start", "Start date must be in the future or present.");
+                }
+            } catch (IllegalArgumentException e) {
+                this.addError("start", "Invalid date format.");
+            }
+        }
+
+        if (getEnd() == null || getEnd() == "") {
+            this.addError("end", "End date is required.");
+        } else if (startParsed != null) {
+            try {
+                endParsed = dateTimeFormatter.parse(getEnd());
+                if (endParsed.getTime() < startParsed.getTime()) {
+                    this.addError("end", "End date must be after start date.");
+                }
+            } catch (IllegalArgumentException e) {
+                this.addError("end", "Invalid date format.");
+            }
+        }
+    }
+
+    @Override
     public String doExecute() throws Exception {
         DateTimeFormatter dateTimeFormatter = dateTimeFormatterFactory.formatter()
-                .forLoggedInUser().withStyle(DateTimeStyle.COMPLETE);
+                .forLoggedInUser().withStyle(DateTimeStyle.COMPLETE).withSystemZone();
         Session session = new Session();
         session.setAuthor(getCurrentUser());
         session.setCreated(new Date());

@@ -43,6 +43,9 @@
     <web-panel key="planning-poker-panel" location="atl.jira.view.issue.right.context"
                class="com.redhat.engineering.plugins.panels.PlanningPokerPanel">
         <label>Planning Poker Session</label>
+        <condition class="com.redhat.engineering.plugins.conditions.SessionCreatedCondition">
+            <param name="key">${issue.key}</param>
+        </condition>
     </web-panel>
 
     <!-- webworks -->
@@ -61,6 +64,7 @@
                 <view name="input">/views/vote/input.vm</view>
                 <view name="error">/views/error.vm</view>
                 <view name="viewVotes">/views/vote/viewVotes.vm</view>
+                <view name="viewVoters">/views/vote/viewVoters.vm</view>
                 <view name="success">/views/success.vm</view>
             </action>
         </actions>

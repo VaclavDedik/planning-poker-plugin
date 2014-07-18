@@ -6,12 +6,16 @@
 <body>
     <div class="form-body">
         <h2 class="dialog-title">View Votes</h2>
-        <dl>
-            #foreach($vote in $action.votes)
-                <dt>$vote.voter.name</dt>
-                <dd>$vote.value</dd>
-            #end
-        </dl>
+        <ul class="item-details">
+            <li class="people-details">
+                <dl>
+                    #foreach($vote in $action.votes)
+                        <dt>$action.getUserHtml($vote.voter)</dt>
+                        <dd><span class="aui-badge vote-state-off">$vote.value</span></dd>
+                    #end
+                </dl>
+            </li>
+        </ul>
     </div>
 
     <div class="buttons-container form-footer">

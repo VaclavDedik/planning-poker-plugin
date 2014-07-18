@@ -1,0 +1,20 @@
+<html>
+<head>
+    <title>View Voters</title>
+    <meta name="decorator" content="issueaction" />
+</head>
+<body>
+<div class="form-body">
+    <h2 class="dialog-title">View Voters</h2>
+    #if ($action.voters)
+        <div class="people-details">
+            #foreach($voter in $action.voters)
+                <div>$action.getUserHtml($voter)</div>
+            #end
+        </div>
+    #else
+        No voters.
+    #end
+</div>
+</body>
+</html>

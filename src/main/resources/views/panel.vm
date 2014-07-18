@@ -1,11 +1,10 @@
-#if ($session)
-    #if ($pokerComponent.isVoter($session))
-        #set ($voteState = "vote-state-on")
-        #set ($voteLabel = "Edit Vote")
-    #else
-        #set ($voteState = "vote-state-off")
-        #set ($voteLabel = "Vote")
-    #end
+#if ($pokerComponent.isVoter($session))
+    #set ($voteState = "vote-state-on")
+    #set ($voteLabel = "Edit Vote")
+#else
+    #set ($voteState = "vote-state-off")
+    #set ($voteLabel = "Vote")
+#end
 
 <ul class="item-details" id="poker-session-author">
     <li class="people-details">
@@ -37,7 +36,8 @@
         <dl class="votes">
             <dt>Votes:</dt>
             <dd>
-                <a id="poker-view-voter-list" href="#" title="View Poker Voters">
+                <a id="poker-view-voter-list" title="View Poker Voters" class="trigger-dialog"
+                   href="${baseurl}/secure/PokerVote!viewVoters.jspa?key=$session.issue.key">
                     <span id="poker-vote-data" class="aui-badge $voteState"
                             >$pokerComponent.getVotesSize($session)</span>
                 </a>
@@ -54,6 +54,3 @@
         </dl>
     </li>
 </ul>
-#else
-No session.
-#end

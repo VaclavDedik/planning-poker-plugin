@@ -30,6 +30,9 @@
                 <a href="#" id="start-trigger" title="Select a date" tabindex="-1">
                     <span class="aui-icon icon-date">Select a date</span>
                 </a>
+                #if ($errors.containsKey("start"))
+                    <div class="error" data-field="end">$errors.get("start")</div>
+                #end
             </div>
             #dateTimePopup("start" "start-trigger" $dateTimeFormat $timeFormat)
             <div class="field-group aui-field-datepicker">
@@ -38,6 +41,9 @@
                 <a href="#" id="end-trigger" title="Select a date" tabindex="-1">
                     <span class="aui-icon icon-date">Select a date</span>
                 </a>
+                #if ($errors.containsKey("end"))
+                    <div class="error" data-field="end">$errors.get("end")</div>
+                #end
             </div>
             #dateTimePopup("end" "end-trigger" $dateTimeFormat $timeFormat)
             <div class="field-group">

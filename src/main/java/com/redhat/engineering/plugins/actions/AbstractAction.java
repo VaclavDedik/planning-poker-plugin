@@ -16,6 +16,12 @@ public abstract class AbstractAction extends JiraWebActionSupport {
         return messages;
     }
 
+    public List<String> getFlushedMessages() {
+        List<String> currentMessages = getMessages();
+        this.messages = new ArrayList<String>();
+        return currentMessages;
+    }
+
     public void addMessage(String message) {
         if (messages == null) {
             messages = new ArrayList<String>();

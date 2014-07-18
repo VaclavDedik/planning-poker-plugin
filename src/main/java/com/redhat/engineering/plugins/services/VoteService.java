@@ -78,6 +78,18 @@ public class VoteService extends AbstractPokerService {
         return votes;
     }
 
+    public List<ApplicationUser> getVotersBySession(Session session) {
+        String issueStoreKey = getIssueStoreKey(session.getIssue());
+        List<String> votersRaw = getList(issueStoreKey + ".voters");
+        List<ApplicationUser> voters = new ArrayList<ApplicationUser>();
+
+        for (String voterRaw : votersRaw) {
+            ApplicationUser voter = userManager.getUserByKey(voterRaw);
+            voters.add(voter);
+        }
+        return voters;
+    }
+
     public boolean isVoter(Session session, ApplicationUser user) {
         return getVoteVal(session, user) != null;
     }

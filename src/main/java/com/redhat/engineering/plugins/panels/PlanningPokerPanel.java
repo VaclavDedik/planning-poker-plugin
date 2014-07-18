@@ -56,8 +56,15 @@ public class PlanningPokerPanel implements WebPanel {
 
     @Override
     public String getHtml(Map<String, Object> context) {
+        if (!authContext.isLoggedInUser()) {
+            return "You must be logged in to view planning poker session.";
+        }
+
         String issueKey = ((Issue) context.get("issue")).getKey();
         Session session = sessionService.get(issueKey);
+        if (session == null) {
+            return "No session.";
+        }
 
         context.put("session", session);
         context.put("pokerComponent", this);
@@ -91,15 +98,15 @@ public class PlanningPokerPanel implements WebPanel {
         return userFormatter.formatUserkey(session.getAuthor().getKey(), "poker-author", params);
     }
 
+    public String getAvatarURL(ApplicationUser user) {
+        return avatarService.getAvatarUrlNoPermCheck(user, Avatar.Size.NORMAL).toString();
+    }
+
     public Integer getVotesSize(Session session) {
         return voteService.getVoteValsBySession(session).size();
     }
 
     public boolean isVoter(Session session) {
         return voteService.isVoter(session, authContext.getUser());
-    }
-
-    public String getAvatarURL(ApplicationUser user) {
-        return avatarService.getAvatarURL(authContext.getUser(), user, Avatar.Size.NORMAL).toString();
     }
 }
