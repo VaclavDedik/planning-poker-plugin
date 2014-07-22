@@ -11,6 +11,8 @@ import com.atlassian.jira.issue.Issue;
 import com.atlassian.jira.plugin.userformat.UserFormats;
 import com.atlassian.jira.plugin.userformat.UserFormatter;
 import com.atlassian.jira.security.JiraAuthenticationContext;
+import com.atlassian.jira.security.PermissionManager;
+import com.atlassian.jira.security.Permissions;
 import com.atlassian.jira.user.ApplicationUser;
 import com.atlassian.plugin.web.model.WebPanel;
 import com.atlassian.templaterenderer.TemplateRenderer;
@@ -40,11 +42,12 @@ public class PlanningPokerPanel implements WebPanel {
     private final UserFormats userFormats;
     private final AvatarService avatarService;
     private final JiraAuthenticationContext authContext;
+    private final PermissionManager permissionManager;
 
     public PlanningPokerPanel(SessionService sessionService, TemplateRenderer templateRenderer,
                               DateTimeFormatterFactory dateTimeFormatterFactory, UserFormats userFormats,
                               AvatarService avatarService, JiraAuthenticationContext authContext,
-                              VoteService voteService) {
+                              VoteService voteService, PermissionManager permissionManager) {
         this.sessionService = sessionService;
         this.voteService = voteService;
         this.templateRenderer = templateRenderer;
@@ -52,6 +55,7 @@ public class PlanningPokerPanel implements WebPanel {
         this.userFormats = userFormats;
         this.avatarService = avatarService;
         this.authContext = authContext;
+        this.permissionManager = permissionManager;
     }
 
     @Override
@@ -108,5 +112,9 @@ public class PlanningPokerPanel implements WebPanel {
 
     public boolean isVoter(Session session) {
         return voteService.isVoter(session, authContext.getUser());
+    }
+
+    public boolean hasVotePermission(Session session) {
+        return permissionManager.hasPermission(Permissions.EDIT_ISSUE, session.getIssue(), authContext.getUser());
     }
 }

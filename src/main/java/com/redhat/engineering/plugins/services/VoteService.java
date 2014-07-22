@@ -98,6 +98,16 @@ public class VoteService extends AbstractPokerService {
         return (String) pluginSettings.get(getIssueStoreKey(session.getIssue()) + "." + user.getKey());
     }
 
+    public void removeAllVotes(Session session) {
+        String issueStoreKey = getIssueStoreKey(session.getIssue());
+        pluginSettings.remove(issueStoreKey + ".votes");
+        List<String> voters = getList(issueStoreKey + ".voters");
+        for (String voter : voters) {
+            pluginSettings.remove(issueStoreKey + "." + voter);
+        }
+        pluginSettings.remove(issueStoreKey + ".voters");
+    }
+
     private <T> List<T> getList(String storeKey) {
         List<T> result = (List<T>) pluginSettings.get(storeKey);
         if (result == null) {

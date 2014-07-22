@@ -37,15 +37,18 @@
         <label key="new-poker-link.label">Create Poker Session</label>
         <link linkId="new-poker-link-id">/secure/PokerSession!default.jspa?key=${issue.key}</link>
         <styleClass>trigger-dialog</styleClass>
+        <condition class="com.atlassian.jira.plugin.webfragment.conditions.IsIssueEditableCondition"/>
+        <condition class="com.atlassian.jira.plugin.webfragment.conditions.HasIssuePermissionCondition">
+            <param name="permission">edit</param>
+        </condition>
     </web-item>
 
     <!-- web pannels -->
     <web-panel key="planning-poker-panel" location="atl.jira.view.issue.right.context"
                class="com.redhat.engineering.plugins.panels.PlanningPokerPanel">
         <label>Planning Poker Session</label>
-        <condition class="com.redhat.engineering.plugins.conditions.SessionCreatedCondition">
-            <param name="key">${issue.key}</param>
-        </condition>
+        <condition class="com.atlassian.jira.plugin.webfragment.conditions.UserLoggedInCondition"/>
+        <condition class="com.redhat.engineering.plugins.conditions.SessionCreatedCondition"/>
     </web-panel>
 
     <!-- webworks -->

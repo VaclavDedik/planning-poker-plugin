@@ -6,6 +6,8 @@ import com.atlassian.jira.datetime.DateTimeFormatterFactory;
 import com.atlassian.jira.datetime.DateTimeStyle;
 import com.atlassian.jira.issue.Issue;
 import com.atlassian.jira.security.JiraAuthenticationContext;
+import com.atlassian.jira.security.PermissionManager;
+import com.atlassian.jira.security.Permissions;
 import com.atlassian.jira.user.ApplicationUser;
 import com.redhat.engineering.plugins.domain.Session;
 import com.redhat.engineering.plugins.services.SessionService;
@@ -24,6 +26,7 @@ public class SessionAction extends AbstractAction {
     private final JiraAuthenticationContext authContext;
     private final SessionService sessionService;
     private final DateTimeFormatterFactory dateTimeFormatterFactory;
+    private final PermissionManager permissionManager;
 
     // properties
     private String key;
@@ -31,11 +34,13 @@ public class SessionAction extends AbstractAction {
     private String end;
 
     public SessionAction(IssueService issueService, JiraAuthenticationContext authContext,
-                         SessionService sessionService, DateTimeFormatterFactory dateTimeFormatterFactory) {
+                         SessionService sessionService, DateTimeFormatterFactory dateTimeFormatterFactory,
+                         PermissionManager permissionManager) {
         this.issueService = issueService;
         this.authContext = authContext;
         this.sessionService = sessionService;
         this.dateTimeFormatterFactory = dateTimeFormatterFactory;
+        this.permissionManager = permissionManager;
     }
 
     public String getKey() {
@@ -73,6 +78,12 @@ public class SessionAction extends AbstractAction {
         Issue issue = getIssueObject();
         if (issue == null) {
             return ERROR;
+        }
+
+        Session session = sessionService.get(issue.getKey());
+        if (session != null) {
+            addMessage("There is already a poker session created. " +
+                    "Creating a new session will delete the old one with all its data (votes).");
         }
 
         return INPUT;
@@ -116,6 +127,11 @@ public class SessionAction extends AbstractAction {
 
     @Override
     public String doExecute() throws Exception {
+        if (!permissionManager.hasPermission(Permissions.EDIT_ISSUE, getIssueObject(), getCurrentUser())) {
+            addErrorMessage("You don't have permission to edit issues.");
+            return ERROR;
+        }
+
         DateTimeFormatter dateTimeFormatter = dateTimeFormatterFactory.formatter()
                 .forLoggedInUser().withStyle(DateTimeStyle.COMPLETE).withSystemZone();
         Session session = new Session();

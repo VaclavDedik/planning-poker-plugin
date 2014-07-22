@@ -6,6 +6,8 @@ import com.atlassian.jira.bc.issue.IssueService;
 import com.atlassian.jira.plugin.userformat.UserFormats;
 import com.atlassian.jira.plugin.userformat.UserFormatter;
 import com.atlassian.jira.security.JiraAuthenticationContext;
+import com.atlassian.jira.security.PermissionManager;
+import com.atlassian.jira.security.Permissions;
 import com.atlassian.jira.user.ApplicationUser;
 import com.google.common.collect.Maps;
 import com.redhat.engineering.plugins.domain.Session;
@@ -26,6 +28,7 @@ public class VoteAction extends AbstractAction {
     private final VoteService voteService;
     private final UserFormats userFormats;
     private final AvatarService avatarService;
+    private final PermissionManager permissionManager;
 
     // properties
     private String key;
@@ -33,12 +36,14 @@ public class VoteAction extends AbstractAction {
     private List<String> messages;
 
     public VoteAction(JiraAuthenticationContext authContext, SessionService sessionService,
-                      VoteService voteService, UserFormats userFormats, AvatarService avatarService) {
+                      VoteService voteService, UserFormats userFormats, AvatarService avatarService,
+                      PermissionManager permissionManager) {
         this.authContext = authContext;
         this.sessionService = sessionService;
         this.voteService = voteService;
         this.userFormats = userFormats;
         this.avatarService = avatarService;
+        this.permissionManager = permissionManager;
     }
 
     public String getKey() {
@@ -87,6 +92,11 @@ public class VoteAction extends AbstractAction {
 
     @Override
     public String doExecute() throws Exception {
+        if (!permissionManager.hasPermission(Permissions.EDIT_ISSUE, getSessionObject().getIssue(), getCurrentUser())) {
+            addErrorMessage("You don't have permission to vote.");
+            return ERROR;
+        }
+
         Vote vote = new Vote();
         vote.setValue(getVoteVal());
         vote.setVoter(getCurrentUser());

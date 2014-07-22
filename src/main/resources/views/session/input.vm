@@ -23,10 +23,15 @@
 <form action="PokerSession.jspa" id="create-poker-session" class="aui" method="post">
     <div class="form-body">
         <h2 class="dialog-title">Create New Planning Poker Session</h2>
+        #foreach ($message in $flushedMessages)
+            <div class="aui-message warning"><span class="aui-icon icon-warning"></span>
+                $message
+            </div>
+        #end
         <div class="content">
             <div class="field-group aui-field-datepicker">
                 <label for="session-start">Start<span class="aui-icon icon-required">Required</span></label>
-                <input class="text medium-field" id="start" name="start" type="text" value="">
+                <input class="text medium-field" id="start" name="start" type="text" value="#if($start)$start#end">
                 <a href="#" id="start-trigger" title="Select a date" tabindex="-1">
                     <span class="aui-icon icon-date">Select a date</span>
                 </a>
@@ -37,7 +42,7 @@
             #dateTimePopup("start" "start-trigger" $dateTimeFormat $timeFormat)
             <div class="field-group aui-field-datepicker">
                 <label for="session-end">End<span class="aui-icon icon-required">Required</span></label>
-                <input class="text medium-field" id="end" name="end" type="text" value="">
+                <input class="text medium-field" id="end" name="end" type="text" value="#if($end)$end#end">
                 <a href="#" id="end-trigger" title="Select a date" tabindex="-1">
                     <span class="aui-icon icon-date">Select a date</span>
                 </a>
@@ -56,7 +61,8 @@
                         vWinUsers.focus();
                     }
                 </script>
-                <textarea id="notifyUserList" name="notifyUserList" class="textarea" cols="40" rows="3"/>
+                <textarea id="notifyUserList" name="notifyUserList" class="textarea"
+                          cols="40" rows="3" value="#if($notifyUserList)$notifyUserList#end"/>
                 <a href="javascript:openMultiWindow('notifyUserList');">
                     <span class="aui-icon icon-userpicker" title="Select a user(s)"></span>
                 </a>

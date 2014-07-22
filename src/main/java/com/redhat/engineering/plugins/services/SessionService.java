@@ -24,13 +24,16 @@ public class SessionService extends AbstractPokerService {
     private final IssueService issueService;
     private final JiraAuthenticationContext authContext;
     private final UserManager userManager;
+    private final VoteService voteService;
 
     public SessionService(PluginSettingsFactory pluginSettingsFactory, IssueService issueService,
-                          JiraAuthenticationContext authContext, UserManager userManager) {
+                          JiraAuthenticationContext authContext, UserManager userManager,
+                          VoteService voteService) {
         this.pluginSettings = pluginSettingsFactory.createGlobalSettings();
         this.issueService = issueService;
         this.authContext = authContext;
         this.userManager = userManager;
+        this.voteService = voteService;
     }
 
     public void save(Session session) {
@@ -41,6 +44,7 @@ public class SessionService extends AbstractPokerService {
         sessionProps.setProperty("authorKey", session.getAuthor().getKey());
 
         pluginSettings.put(getIssueStoreKey(session.getIssue()), sessionProps);
+        voteService.removeAllVotes(session);
     }
 
     public Session get(String issueKey) {

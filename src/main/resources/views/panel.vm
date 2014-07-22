@@ -18,10 +18,6 @@
 <ul class="item-details" id="poker-session-dates">
     <li>
         <dl class="dates">
-            <dt>Created:</dt>
-            <dd>$pokerComponent.formatDate($session.created)</dd>
-        </dl>
-        <dl class="dates">
             <dt>Start:</dt>
             <dd>$pokerComponent.formatDate($session.start)</dd>
         </dl>
@@ -41,8 +37,10 @@
                     <span id="poker-vote-data" class="aui-badge $voteState"
                             >$pokerComponent.getVotesSize($session)</span>
                 </a>
+                #if ($pokerComponent.hasVotePermission($session))
                 <a id="poker-vote" class="trigger-dialog"
                    href="${baseurl}/secure/PokerVote!default.jspa?key=$session.issue.key">$voteLabel</a>
+                #end
             </dd>
         </dl>
         <dl class="score">
