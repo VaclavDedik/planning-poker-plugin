@@ -62,10 +62,13 @@
                     }
                 </script>
                 <textarea id="notifyUserList" name="notifyUserList" class="textarea"
-                          cols="40" rows="3" value="#if($notifyUserList)$notifyUserList#end"/>
+                          cols="40" rows="3">#if($notifyUserList)$notifyUserList#end</textarea>
                 <a href="javascript:openMultiWindow('notifyUserList');">
                     <span class="aui-icon icon-userpicker" title="Select a user(s)"></span>
                 </a>
+                #if ($errors.containsKey("notifyUserList"))
+                    <div class="error" data-field="notifyUserList">$errors.get("notifyUserList")</div>
+                #end
             </div>
         </div>
         <div class="hidden">

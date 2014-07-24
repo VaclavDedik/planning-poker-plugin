@@ -14,12 +14,13 @@
 </div>
 <script type="text/javascript">
     #foreach($message in $flushedMessages)
-    JIRA.Messages.showMsg("$message", {
-        type: JIRA.Messages.Types.SUCCESS,
+    JIRA.Messages.showMsgOnReload("$message", {
+        type: "SUCCESS",
         closeable: true
     });
     #end
     JIRA.Dialog.current.hide();
+    JIRA.trigger(JIRA.Events.REFRESH_ISSUE_PAGE, [JIRA.Issue.getIssueId()]);
 </script>
 </body>
 </html>

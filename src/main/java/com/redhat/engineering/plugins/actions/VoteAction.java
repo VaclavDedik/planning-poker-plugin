@@ -2,7 +2,6 @@ package com.redhat.engineering.plugins.actions;
 
 import com.atlassian.jira.avatar.Avatar;
 import com.atlassian.jira.avatar.AvatarService;
-import com.atlassian.jira.bc.issue.IssueService;
 import com.atlassian.jira.plugin.userformat.UserFormats;
 import com.atlassian.jira.plugin.userformat.UserFormatter;
 import com.atlassian.jira.security.JiraAuthenticationContext;
@@ -103,7 +102,7 @@ public class VoteAction extends AbstractAction {
         vote.setSession(getSessionObject());
         voteService.save(vote);
 
-        this.addMessage("Your vote has been successfully saved. Refresh page to see made changes.");
+        this.addMessage("Your vote has been successfully saved.");
         return SUCCESS;
     }
 

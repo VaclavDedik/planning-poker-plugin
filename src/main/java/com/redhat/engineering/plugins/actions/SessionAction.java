@@ -1,20 +1,30 @@
 package com.redhat.engineering.plugins.actions;
 
 import com.atlassian.jira.bc.issue.IssueService;
+import com.atlassian.jira.component.ComponentAccessor;
 import com.atlassian.jira.datetime.DateTimeFormatter;
 import com.atlassian.jira.datetime.DateTimeFormatterFactory;
 import com.atlassian.jira.datetime.DateTimeStyle;
 import com.atlassian.jira.issue.Issue;
+import com.atlassian.jira.mail.Email;
 import com.atlassian.jira.security.JiraAuthenticationContext;
 import com.atlassian.jira.security.PermissionManager;
 import com.atlassian.jira.security.Permissions;
 import com.atlassian.jira.user.ApplicationUser;
+import com.atlassian.mail.queue.SingleMailQueueItem;
+import com.atlassian.templaterenderer.TemplateRenderer;
+import com.google.common.collect.Maps;
 import com.redhat.engineering.plugins.domain.Session;
+import com.redhat.engineering.plugins.exceptions.UserNotFoundException;
 import com.redhat.engineering.plugins.services.SessionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author vdedik@redhat.com
@@ -27,20 +37,23 @@ public class SessionAction extends AbstractAction {
     private final SessionService sessionService;
     private final DateTimeFormatterFactory dateTimeFormatterFactory;
     private final PermissionManager permissionManager;
+    private final TemplateRenderer templateRenderer;
 
     // properties
     private String key;
     private String start;
     private String end;
+    private String notifyUserList;
 
     public SessionAction(IssueService issueService, JiraAuthenticationContext authContext,
                          SessionService sessionService, DateTimeFormatterFactory dateTimeFormatterFactory,
-                         PermissionManager permissionManager) {
+                         PermissionManager permissionManager, TemplateRenderer templateRenderer) {
         this.issueService = issueService;
         this.authContext = authContext;
         this.sessionService = sessionService;
         this.dateTimeFormatterFactory = dateTimeFormatterFactory;
         this.permissionManager = permissionManager;
+        this.templateRenderer = templateRenderer;
     }
 
     public String getKey() {
@@ -65,6 +78,35 @@ public class SessionAction extends AbstractAction {
 
     public void setEnd(String end) {
         this.end = end;
+    }
+
+    public String getNotifyUserList() {
+        return notifyUserList;
+    }
+
+    public void setNotifyUserList(String notifyUserList) {
+        this.notifyUserList = notifyUserList;
+    }
+
+    private List<ApplicationUser> parsedNotifyUserList;
+
+    public List<ApplicationUser> parseNotifyUserList() {
+        if (parsedNotifyUserList != null) {
+            return parsedNotifyUserList;
+        }
+
+        List<ApplicationUser> result = new ArrayList<ApplicationUser>();
+        String[] rawResult = getNotifyUserList().split(",");
+        for (String rawUser : rawResult) {
+            ApplicationUser user = getUserManager().getUserByKey(rawUser.trim());
+            if (user == null) {
+                throw new UserNotFoundException(rawUser);
+            }
+            result.add(user);
+        }
+
+        parsedNotifyUserList = result;
+        return result;
     }
 
     @Override
@@ -123,6 +165,12 @@ public class SessionAction extends AbstractAction {
                 this.addError("end", "Invalid date format.");
             }
         }
+
+        try {
+            parseNotifyUserList();
+        } catch (UserNotFoundException e) {
+            this.addError("notifyUserList", "User '" + e.getUserName() + "' not found.");
+        }
     }
 
     @Override
@@ -141,6 +189,25 @@ public class SessionAction extends AbstractAction {
         session.setStart(dateTimeFormatter.parse(getStart()));
         session.setEnd(dateTimeFormatter.parse(getEnd()));
         sessionService.save(session);
+
+        for (ApplicationUser user : parseNotifyUserList()) {
+            Email em = new Email(user.getEmailAddress());
+            em.setSubject("New planning poker session has been created for issue " + getIssueObject().getKey() + ".");
+
+            StringWriter body = new StringWriter();
+            Map<String, Object> context = Maps.newHashMap();
+            context.put("issue", getIssueObject());
+            String baseUrl = getHttpRequest().getRequestURL().toString()
+                    .replaceAll(getHttpRequest().getServletPath(), "");
+            context.put("baseUrl", baseUrl);
+            templateRenderer.render("views/emails/notify.vm", context, body);
+
+            em.setBody(body.toString());
+            em.setMimeType("text/html");
+            SingleMailQueueItem smqi = new SingleMailQueueItem(em);
+
+            ComponentAccessor.getMailQueue().addItem(smqi);
+        }
 
         this.addMessage("New Session has been successfully created.");
         return SUCCESS;
