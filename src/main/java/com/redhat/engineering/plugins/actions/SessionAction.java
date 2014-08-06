@@ -96,13 +96,15 @@ public class SessionAction extends AbstractAction {
         }
 
         List<ApplicationUser> result = new ArrayList<ApplicationUser>();
-        String[] rawResult = getNotifyUserList().split(",");
-        for (String rawUser : rawResult) {
-            ApplicationUser user = getUserManager().getUserByKey(rawUser.trim());
-            if (user == null) {
-                throw new UserNotFoundException(rawUser);
+        if (!"".equals(getNotifyUserList())) {
+            String[] rawResult = getNotifyUserList().split(",");
+            for (String rawUser : rawResult) {
+                ApplicationUser user = getUserManager().getUserByKey(rawUser.trim());
+                if (user == null) {
+                    throw new UserNotFoundException(rawUser);
+                }
+                result.add(user);
             }
-            result.add(user);
         }
 
         parsedNotifyUserList = result;
@@ -139,7 +141,7 @@ public class SessionAction extends AbstractAction {
         Date startParsed = null;
         Date endParsed = null;
 
-        if (getStart() == null || getStart() == "") {
+        if (getStart() == null || "".equals(getStart())) {
             this.addError("start", "Start date is required.");
         } else {
             try {
@@ -153,7 +155,7 @@ public class SessionAction extends AbstractAction {
             }
         }
 
-        if (getEnd() == null || getEnd() == "") {
+        if (getEnd() == null || "".equals(getEnd())) {
             this.addError("end", "End date is required.");
         } else if (startParsed != null) {
             try {
