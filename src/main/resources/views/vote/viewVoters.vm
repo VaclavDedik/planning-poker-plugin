@@ -9,7 +9,7 @@
     #if ($action.voters)
         <div class="people-details">
             #foreach($voter in $action.voters)
-                <div>$action.getUserHtml($voter)</div>
+                <div style="margin-bottom: 10px;">$action.getUserHtml($voter)</div>
             #end
         </div>
     #else

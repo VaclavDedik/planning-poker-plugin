@@ -14,6 +14,7 @@
                 <span id="author-val" class="view-issue-field">$pokerComponent.getAuthorHtml($session)</span>
             </dd>
         </dl>
+    </li>
 </ul>
 <ul class="item-details" id="poker-session-dates">
     <li>

@@ -6,23 +6,47 @@
 <body>
     <div class="form-body">
         <h2 class="dialog-title">View Votes</h2>
-        <ul class="item-details">
-            <li class="people-details">
-                <dl>
-                    #foreach($vote in $action.votes)
-                        <dt>$action.getUserHtml($vote.voter)</dt>
-                        <dd><span class="aui-badge vote-state-off">$vote.value</span></dd>
-                    #end
-                </dl>
-            </li>
-        </ul>
-    </div>
-
-    <div class="buttons-container form-footer">
-        <div class="buttons">
-            <a accesskey="`" class="cancel" href="${baseurl}/browse/${key}" id="view-vote-poker-cancel"
-               title="Press Ctrl+Alt+` to cancel">Cancel</a>
+        #foreach($vote in $action.votes)
+        <div class="module toggle-wrap">
+            <div class="mod-header">
+                <ul class="ops"></ul>
+            </div>
+            <div class="mod-content">
+                <ul class="item-details">
+                    <li class="people-details">
+                        <dl>
+                            <dt>Voter:</dt>
+                            <dd>
+                                <span class="view-issue-field">$action.getUserHtml($vote.voter)</span>
+                            </dd>
+                        </dl>
+                    </li>
+                </ul>
+                <ul class="item-details">
+                    <li>
+                        <dl>
+                            <dt>Vote Value:</dt>
+                            <dd>
+                                <span class="aui-badge vote-state-off">$vote.value</span>
+                            </dd>
+                        </dl>
+                    </li>
+                </ul>
+                #if ($vote.comment and $vote.comment != "")
+                <ul class="item-details">
+                    <li>
+                        <dl>
+                            <dt>Comment:</dt>
+                            <dd>
+                                <span class="view-issue-field">$vote.comment</span>
+                            </dd>
+                        </dl>
+                    </li>
+                </ul>
+                #end
+            </div>
         </div>
+        #end
     </div>
 </body>
 </html>

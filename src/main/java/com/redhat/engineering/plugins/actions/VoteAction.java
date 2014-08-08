@@ -32,7 +32,7 @@ public class VoteAction extends AbstractAction {
     // properties
     private String key;
     private String voteVal;
-    private List<String> messages;
+    private String voteComment;
 
     public VoteAction(JiraAuthenticationContext authContext, SessionService sessionService,
                       VoteService voteService, UserFormats userFormats, AvatarService avatarService,
@@ -61,6 +61,14 @@ public class VoteAction extends AbstractAction {
         this.voteVal = voteVal;
     }
 
+    public String getVoteComment() {
+        return voteComment;
+    }
+
+    public void setVoteComment(String voteComment) {
+        this.voteComment = voteComment;
+    }
+
     @Override
     public String doDefault() throws Exception {
 
@@ -84,6 +92,7 @@ public class VoteAction extends AbstractAction {
 
         if (voteService.isVoter(session, getCurrentUser())) {
             setVoteVal(voteService.getVoteVal(session, getCurrentUser()));
+            setVoteComment(voteService.getVoteComment(session, getCurrentUser()));
         }
 
         return INPUT;
@@ -100,6 +109,7 @@ public class VoteAction extends AbstractAction {
         vote.setValue(getVoteVal());
         vote.setVoter(getCurrentUser());
         vote.setSession(getSessionObject());
+        vote.setComment(getVoteComment());
         voteService.save(vote);
 
         this.addMessage("Your vote has been successfully saved.");

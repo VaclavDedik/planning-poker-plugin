@@ -53,6 +53,9 @@ public class VoteService extends AbstractPokerService {
         }
         votes.add(vote.getValue());
         pluginSettings.put(issueStoreKey + ".votes", votes);
+
+        String commentKey = issueStoreKey + "." + vote.getVoter().getKey() + ".comment";
+        pluginSettings.put(commentKey, vote.getComment());
     }
 
     public List<String> getVoteValsBySession(Session session) {
@@ -72,6 +75,8 @@ public class VoteService extends AbstractPokerService {
             vote.setVoter(userManager.getUserByKey(voterKey));
             String voteVal = (String) pluginSettings.get(issueStoreKey + "." + voterKey);
             vote.setValue(voteVal);
+            String comment = (String) pluginSettings.get(issueStoreKey + "." + voterKey + ".comment");
+            vote.setComment(comment);
             votes.add(vote);
         }
 
@@ -98,12 +103,17 @@ public class VoteService extends AbstractPokerService {
         return (String) pluginSettings.get(getIssueStoreKey(session.getIssue()) + "." + user.getKey());
     }
 
+    public String getVoteComment(Session session, ApplicationUser user) {
+        return (String) pluginSettings.get(getIssueStoreKey(session.getIssue()) + "." + user.getKey() + ".comment");
+    }
+
     public void removeAllVotes(Session session) {
         String issueStoreKey = getIssueStoreKey(session.getIssue());
         pluginSettings.remove(issueStoreKey + ".votes");
         List<String> voters = getList(issueStoreKey + ".voters");
         for (String voter : voters) {
             pluginSettings.remove(issueStoreKey + "." + voter);
+            pluginSettings.remove(issueStoreKey + "." + voter + ".comment");
         }
         pluginSettings.remove(issueStoreKey + ".voters");
     }

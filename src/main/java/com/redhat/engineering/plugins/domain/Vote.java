@@ -9,6 +9,7 @@ public class Vote {
     private Session session;
     private ApplicationUser voter;
     private String value;
+    private String comment;
 
     public Session getSession() {
         return session;
@@ -32,5 +33,13 @@ public class Vote {
 
     public void setValue(String value) {
         this.value = value;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 }

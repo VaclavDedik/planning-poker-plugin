@@ -47,7 +47,8 @@
                 margin: 5px;
             }
             .cards {
-                margin: 0 145px;
+                margin: 0 90px;
+                margin-bottom: 20px;
             }
         </style>
         <script type="text/javascript">
@@ -66,23 +67,21 @@
         </script>
         <div id="poker-vote-cards" class="cards">
             <div class="cards-row">
-                <div class="card #activate($voteVal 0)" onclick="javascript:chooseCard(this)">0</div>
-                <div class="card #activate($voteVal '1/2')" onclick="javascript:chooseCard(this)">1/2</div>
-                <div class="card #activate($voteVal 1)" onclick="javascript:chooseCard(this)">1</div>
-                <div class="card #activate($voteVal 2)" onclick="javascript:chooseCard(this)">2</div>
-            </div>
-            <div class="cards-row">
                 <div class="card #activate($voteVal 3)" onclick="javascript:chooseCard(this)">3</div>
                 <div class="card #activate($voteVal 5)" onclick="javascript:chooseCard(this)">5</div>
                 <div class="card #activate($voteVal 8)" onclick="javascript:chooseCard(this)">8</div>
                 <div class="card #activate($voteVal 13)" onclick="javascript:chooseCard(this)">13</div>
-            </div>
-            <div class="cards-row">
-                <div class="card #activate($voteVal 20)" onclick="javascript:chooseCard(this)">20</div>
-                <div class="card #activate($voteVal 40)" onclick="javascript:chooseCard(this)">40</div>
-                <div class="card #activate($voteVal 100)" onclick="javascript:chooseCard(this)">100</div>
+                <div class="card #activate($voteVal 21)" onclick="javascript:chooseCard(this)">21</div>
                 <div class="card #activate($voteVal '?')" onclick="javascript:chooseCard(this)">?</div>
             </div>
+        </div>
+        <div class="field-group">
+            <label for="voteComment">Comment</label>
+            <textarea id="voteComment" name="voteComment" class="textarea"
+                      cols="40" rows="3">#if($voteComment)$voteComment#end</textarea>
+            #if ($errors.containsKey("voteComment"))
+                <div class="error" data-field="voteComment">$errors.get("voteComment")</div>
+            #end
         </div>
         <div class="hidden">
             <input type="hidden" name="voteVal" class="text" id="poker-vote-value" value="${voteVal}"/>
