@@ -98,7 +98,7 @@ public class SessionAction extends AbstractAction {
         if (!"".equals(getNotifyUserList())) {
             String[] rawResult = getNotifyUserList().split(",");
             for (String rawUser : rawResult) {
-                ApplicationUser user = getUserManager().getUserByKey(rawUser.trim());
+                ApplicationUser user = getUserManager().getUserByName(rawUser.trim());
                 if (user == null) {
                     throw new UserNotFoundException(rawUser);
                 }
