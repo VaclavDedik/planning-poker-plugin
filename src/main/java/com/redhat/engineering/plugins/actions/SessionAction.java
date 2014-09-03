@@ -3,7 +3,6 @@ package com.redhat.engineering.plugins.actions;
 import com.atlassian.jira.bc.issue.IssueService;
 import com.atlassian.jira.component.ComponentAccessor;
 import com.atlassian.jira.datetime.DateTimeFormatter;
-import com.atlassian.jira.datetime.DateTimeFormatterFactory;
 import com.atlassian.jira.datetime.DateTimeStyle;
 import com.atlassian.jira.issue.Issue;
 import com.atlassian.jira.mail.Email;
@@ -35,7 +34,7 @@ public class SessionAction extends AbstractAction {
     private final IssueService issueService;
     private final JiraAuthenticationContext authContext;
     private final SessionService sessionService;
-    private final DateTimeFormatterFactory dateTimeFormatterFactory;
+    private final DateTimeFormatter dateTimeFormatter;
     private final PermissionManager permissionManager;
     private final TemplateRenderer templateRenderer;
 
@@ -46,12 +45,12 @@ public class SessionAction extends AbstractAction {
     private String notifyUserList;
 
     public SessionAction(IssueService issueService, JiraAuthenticationContext authContext,
-                         SessionService sessionService, DateTimeFormatterFactory dateTimeFormatterFactory,
+                         SessionService sessionService, DateTimeFormatter dateTimeFormatter,
                          PermissionManager permissionManager, TemplateRenderer templateRenderer) {
         this.issueService = issueService;
         this.authContext = authContext;
         this.sessionService = sessionService;
-        this.dateTimeFormatterFactory = dateTimeFormatterFactory;
+        this.dateTimeFormatter = dateTimeFormatter.forLoggedInUser();
         this.permissionManager = permissionManager;
         this.templateRenderer = templateRenderer;
     }
@@ -135,8 +134,7 @@ public class SessionAction extends AbstractAction {
 
     @Override
     public void doValidation() {
-        DateTimeFormatter dateTimeFormatter = dateTimeFormatterFactory.formatter()
-                .forLoggedInUser().withStyle(DateTimeStyle.COMPLETE).withSystemZone();
+        DateTimeFormatter dateTimeFormatter = this.dateTimeFormatter.withStyle(DateTimeStyle.COMPLETE);
 
         Date startParsed = null;
         Date endParsed = null;
@@ -182,8 +180,7 @@ public class SessionAction extends AbstractAction {
             return ERROR;
         }
 
-        DateTimeFormatter dateTimeFormatter = dateTimeFormatterFactory.formatter()
-                .forLoggedInUser().withStyle(DateTimeStyle.COMPLETE).withSystemZone();
+        DateTimeFormatter dateTimeFormatter = this.dateTimeFormatter.withStyle(DateTimeStyle.COMPLETE);
         Session session = new Session();
         session.setAuthor(getCurrentUser());
         session.setCreated(new Date());

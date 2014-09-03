@@ -1,17 +1,21 @@
 #macro(dateTimePopup $inputId $inputButton $dateTimeFormat $timeFormat)
-<script language="javascript" >
-    Calendar.setup({
-        firstDay : 1,
-        inputField : '$inputId',
-        button : '$inputButton',
-        align : 'Br',
-        singleClick : true,
-        showsTime : true,
-        useISO8601WeekNumbers : false,
-        ifFormat : '$dateTimeFormat',
-        timeFormat : '$timeFormat'
-    });
-</script>
+    #set ($rfc822Formatter = $dateFormatter.withStyle($dateTimeStyle.RSS_RFC822_DATE_TIME))
+    #set ($rfc822DateWithTzAsString = $rfc822Formatter.format($dateutils.date($currentMillis)))
+    #set ($rfc822DateStrNoTzEndIndex = $rfc822DateWithTzAsString.length() - 5)
+    <script language="javascript" >
+        Calendar.setup({
+            firstDay : 1,
+            inputField : '$inputId',
+            button : '$inputButton',
+            align : 'Br',
+            singleClick : true,
+            showsTime : true,
+            useISO8601WeekNumbers : false,
+            ifFormat : '$dateTimeFormat',
+            timeFormat : '$timeFormat',
+            date : '$rfc822DateWithTzAsString.substring(0, $rfc822DateStrNoTzEndIndex)'
+        });
+    </script>
 #end
 
 <html>

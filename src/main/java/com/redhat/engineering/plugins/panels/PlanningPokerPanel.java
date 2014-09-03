@@ -5,7 +5,6 @@ import com.atlassian.jira.avatar.AvatarService;
 import com.atlassian.jira.component.ComponentAccessor;
 import com.atlassian.jira.config.properties.APKeys;
 import com.atlassian.jira.datetime.DateTimeFormatter;
-import com.atlassian.jira.datetime.DateTimeFormatterFactory;
 import com.atlassian.jira.datetime.DateTimeStyle;
 import com.atlassian.jira.issue.Issue;
 import com.atlassian.jira.plugin.userformat.UserFormats;
@@ -38,20 +37,20 @@ public class PlanningPokerPanel implements WebPanel {
     private final SessionService sessionService;
     private final VoteService voteService;
     private final TemplateRenderer templateRenderer;
-    private final DateTimeFormatterFactory dateTimeFormatterFactory;
+    private final DateTimeFormatter dateTimeFormatter;
     private final UserFormats userFormats;
     private final AvatarService avatarService;
     private final JiraAuthenticationContext authContext;
     private final PermissionManager permissionManager;
 
     public PlanningPokerPanel(SessionService sessionService, TemplateRenderer templateRenderer,
-                              DateTimeFormatterFactory dateTimeFormatterFactory, UserFormats userFormats,
+                              DateTimeFormatter dateTimeFormatter, UserFormats userFormats,
                               AvatarService avatarService, JiraAuthenticationContext authContext,
                               VoteService voteService, PermissionManager permissionManager) {
         this.sessionService = sessionService;
         this.voteService = voteService;
         this.templateRenderer = templateRenderer;
-        this.dateTimeFormatterFactory = dateTimeFormatterFactory;
+        this.dateTimeFormatter = dateTimeFormatter.forLoggedInUser();
         this.userFormats = userFormats;
         this.avatarService = avatarService;
         this.authContext = authContext;
@@ -91,8 +90,7 @@ public class PlanningPokerPanel implements WebPanel {
     }
 
     public String formatDate(Date date) {
-        DateTimeFormatter dateTimeFormatter = dateTimeFormatterFactory.formatter().forLoggedInUser();
-        return dateTimeFormatter.withStyle(DateTimeStyle.COMPLETE).format(date);
+        return this.dateTimeFormatter.withStyle(DateTimeStyle.RELATIVE_ALWAYS_WITH_TIME).format(date);
     }
 
     public String getAuthorHtml(Session session) {
