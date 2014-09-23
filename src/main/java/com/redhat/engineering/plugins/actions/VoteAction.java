@@ -11,6 +11,7 @@ import com.atlassian.jira.user.ApplicationUser;
 import com.google.common.collect.Maps;
 import com.redhat.engineering.plugins.domain.Session;
 import com.redhat.engineering.plugins.domain.Vote;
+import com.redhat.engineering.plugins.services.ConfigService;
 import com.redhat.engineering.plugins.services.SessionService;
 import com.redhat.engineering.plugins.services.VoteService;
 
@@ -28,21 +29,24 @@ public class VoteAction extends AbstractAction {
     private final UserFormats userFormats;
     private final AvatarService avatarService;
     private final PermissionManager permissionManager;
+    private final ConfigService configService;
 
     // properties
     private String key;
     private String voteVal;
     private String voteComment;
+    private List<String> allowedVotes;
 
     public VoteAction(JiraAuthenticationContext authContext, SessionService sessionService,
                       VoteService voteService, UserFormats userFormats, AvatarService avatarService,
-                      PermissionManager permissionManager) {
+                      PermissionManager permissionManager, ConfigService configService) {
         this.authContext = authContext;
         this.sessionService = sessionService;
         this.voteService = voteService;
         this.userFormats = userFormats;
         this.avatarService = avatarService;
         this.permissionManager = permissionManager;
+        this.configService = configService;
     }
 
     public String getKey() {
@@ -67,6 +71,13 @@ public class VoteAction extends AbstractAction {
 
     public void setVoteComment(String voteComment) {
         this.voteComment = voteComment;
+    }
+
+    public List<String> getAllowedVotes() {
+        if (allowedVotes == null) {
+            allowedVotes = configService.getAllowedVotes();
+        }
+        return allowedVotes;
     }
 
     @Override

@@ -1,0 +1,36 @@
+<html>
+<head>
+    <title>Planning Poker Configuration</title>
+    <meta name="admin.active.section" content="admin_system_menu/top_system_section/issue_features">
+    <meta name="admin.active.tab" content="poker-config-link.link">
+</head>
+<body>
+<form action="PokerConfig.jspa" method="post" class="aui">
+    <div class="form-body">
+        <h2>Planning Poker Configuration</h2>
+
+        #if($action.messages)
+            #foreach($message in $action.messages)
+                <div class="aui-message success"><span class="aui-icon icon-success"></span>
+                    <p>$message</p>
+                </div>
+            #end
+        #end
+
+
+        <div class="field-group">
+            <label for="poker-allowed-votes">List of Poker Votes</label>
+            <input id="poker-allowed-votes" class="text" type="text" name="allowedVotes"
+                   value="$allowedVotes">
+        </div>
+
+        <div class="buttons-container">
+            <div class="buttons">
+                <input class="button submit" type="submit" value="Save"/>
+            </div>
+        </div>
+    </div>
+</form>
+
+</body>
+</html>

@@ -35,6 +35,7 @@
                 line-height: 3em;
                 cursor: pointer;
                 background-color: rgb(224, 230, 230);
+                margin-bottom: 3px;
             }
             .card:hover {
                 background-color: #6baff4;
@@ -67,12 +68,9 @@
         </script>
         <div id="poker-vote-cards" class="cards">
             <div class="cards-row">
-                <div class="card #activate($voteVal 3)" onclick="javascript:chooseCard(this)">3</div>
-                <div class="card #activate($voteVal 5)" onclick="javascript:chooseCard(this)">5</div>
-                <div class="card #activate($voteVal 8)" onclick="javascript:chooseCard(this)">8</div>
-                <div class="card #activate($voteVal 13)" onclick="javascript:chooseCard(this)">13</div>
-                <div class="card #activate($voteVal 21)" onclick="javascript:chooseCard(this)">21</div>
-                <div class="card #activate($voteVal '?')" onclick="javascript:chooseCard(this)">?</div>
+                #foreach($allowedVote in $action.allowedVotes)
+                    <div class="card #activate($voteVal $allowedVote)" onclick="javascript:chooseCard(this)">$allowedVote</div>
+                #end
             </div>
         </div>
         <div class="field-group">

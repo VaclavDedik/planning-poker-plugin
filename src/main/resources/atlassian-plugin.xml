@@ -7,6 +7,7 @@
         <vendor name="${project.organization.name}" url="${project.organization.url}"/>
         <param name="plugin-icon">images/pluginIcon.png</param>
         <param name="plugin-logo">images/pluginLogo.png</param>
+        <param name="configure.url">/secure/admin/PokerConfig!default.jspa</param>
     </plugin-info>
 
     <!-- add our i18n resource -->
@@ -30,6 +31,7 @@
     <!-- components -->
     <component key="sessionService" class="com.redhat.engineering.plugins.services.SessionService" />
     <component key="voteService" class="com.redhat.engineering.plugins.services.VoteService" />
+    <component key="configService" class="com.redhat.engineering.plugins.services.ConfigService" />
 
     <!-- web items -->
     <web-item name="New Poker Session" i18n-name-key="new-poker-link.name" key="new-poker-link"
@@ -41,6 +43,11 @@
         <condition class="com.atlassian.jira.plugin.webfragment.conditions.HasIssuePermissionCondition">
             <param name="permission">edit</param>
         </condition>
+    </web-item>
+    <web-item name="Planning Poker Configuration" i18n-name-key="poker-config-link.name" key="poker-config-link"
+              section="top_system_section/issue_features" weight="150">
+        <label>Planning Poker</label>
+        <link linkId="poker-config-link.link">/secure/admin/PokerConfig!default.jspa</link>
     </web-item>
 
     <!-- web pannels -->
@@ -68,6 +75,15 @@
                 <view name="error">/views/error.vm</view>
                 <view name="viewVotes">/views/vote/viewVotes.vm</view>
                 <view name="viewVoters">/views/vote/viewVoters.vm</view>
+                <view name="success">/views/success.vm</view>
+            </action>
+        </actions>
+    </webwork1>
+    <webwork1 key="poker-config-webwork" name="Planning Poker Config" i18n-name-key="poker-config-webwork.name">
+        <actions>
+            <action name="com.redhat.engineering.plugins.actions.ConfigAction" alias="PokerConfig">
+                <view name="input">/views/config/input.vm</view>
+                <view name="error">/views/error.vm</view>
                 <view name="success">/views/success.vm</view>
             </action>
         </actions>
