@@ -63,6 +63,12 @@
                         var vWinUsers = window.open('$baseurl/secure/popups/UserPickerBrowser.jspa?formName=jiraform&multiSelect=true&element=' + element, 'UserPicker', 'status=yes,resizable=yes,top=100,left=200,width=700,height=750,scrollbars=yes');
                         vWinUsers.opener = self;
                         vWinUsers.focus();
+
+                        var error = document.getElementById("notifyUserList-errors");
+                        if (error) {
+                            error.remove()
+                        }
+
                     }
                 </script>
                 <textarea id="notifyUserList" name="notifyUserList" class="textarea"
@@ -71,7 +77,7 @@
                     <span class="aui-icon icon-userpicker" title="Select a user(s)"></span>
                 </a>
                 #if ($errors.containsKey("notifyUserList"))
-                    <div class="error" data-field="notifyUserList">$errors.get("notifyUserList")</div>
+                    <div id="notifyUserList-errors" class="error" data-field="notifyUserList">$errors.get("notifyUserList")</div>
                 #end
             </div>
         </div>
