@@ -61,7 +61,7 @@
 
                 card.classList.add("active")
                 var voteVal = document.getElementById("poker-vote-value")
-                voteVal.value = card.innerText
+                voteVal.value = card.innerHTML
 
                 document.getElementById("poker-vote-submit").removeAttribute("disabled")
             }
