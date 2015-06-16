@@ -43,6 +43,7 @@ public class SessionAction extends AbstractAction {
     private String start;
     private String end;
     private String notifyUserList;
+    private Boolean edit = false;
 
     public SessionAction(IssueService issueService, JiraAuthenticationContext authContext,
                          SessionService sessionService, DateTimeFormatter dateTimeFormatter,
@@ -53,6 +54,14 @@ public class SessionAction extends AbstractAction {
         this.dateTimeFormatter = dateTimeFormatter.forLoggedInUser();
         this.permissionManager = permissionManager;
         this.templateRenderer = templateRenderer;
+    }
+
+    public Boolean getEdit() {
+        return this.edit;
+    }
+
+    public void setEdit(Boolean edit) {
+        this.edit = edit;
     }
 
     public String getKey() {
@@ -145,7 +154,7 @@ public class SessionAction extends AbstractAction {
             try {
                 startParsed = dateTimeFormatter.parse(getStart());
                 Long fiveMin = 5*60*1000L;
-                if (startParsed.getTime() < System.currentTimeMillis() - fiveMin) {
+                if (!this.edit && startParsed.getTime() < System.currentTimeMillis() - fiveMin) {
                     this.addError("start", "Start date must be in the future or present.");
                 }
             } catch (IllegalArgumentException e) {
@@ -180,6 +189,14 @@ public class SessionAction extends AbstractAction {
             return ERROR;
         }
 
+        if (this.edit) {
+            return saveEdit();
+        } else {
+            return saveCreate();
+        }
+    }
+
+    public String saveCreate() throws Exception {
         DateTimeFormatter dateTimeFormatter = this.dateTimeFormatter.withStyle(DateTimeStyle.COMPLETE);
         Session session = new Session();
         session.setAuthor(getCurrentUser());
@@ -189,6 +206,26 @@ public class SessionAction extends AbstractAction {
         session.setEnd(dateTimeFormatter.parse(getEnd()));
         sessionService.save(session);
 
+        sendEmailToNotifyUsers();
+
+        this.addMessage("New Session has been successfully created.");
+        return SUCCESS;
+    }
+
+    public String saveEdit() throws Exception {
+        DateTimeFormatter dateTimeFormatter = this.dateTimeFormatter.withStyle(DateTimeStyle.COMPLETE);
+        Session session = getSessionObject();
+        session.setStart(dateTimeFormatter.parse(getStart()));
+        session.setEnd(dateTimeFormatter.parse(getEnd()));
+        sessionService.update(session);
+
+        sendEmailToNotifyUsers();
+
+        this.addMessage("Session has been successfully updated.");
+        return SUCCESS;
+    }
+
+    public void sendEmailToNotifyUsers() throws Exception {
         for (ApplicationUser user : parseNotifyUserList()) {
             Email em = new Email(user.getEmailAddress());
             em.setSubject("New planning poker session has been created for issue " + getIssueObject().getKey() + ".");
@@ -207,9 +244,6 @@ public class SessionAction extends AbstractAction {
 
             ComponentAccessor.getMailQueue().addItem(smqi);
         }
-
-        this.addMessage("New Session has been successfully created.");
-        return SUCCESS;
     }
 
     public String doDelete() throws Exception {
@@ -222,6 +256,19 @@ public class SessionAction extends AbstractAction {
         this.addMessage("Session for issue " + getKey() + " has been successfully deleted.");
 
         return SUCCESS;
+    }
+
+    public String doEdit() throws Exception {
+        Session session = getSessionObject();
+        this.edit = true;
+        if (!session.getAuthor().equals(authContext.getUser())) {
+            return ERROR;
+        }
+
+        this.start = this.dateTimeFormatter.withStyle(DateTimeStyle.DATE_TIME_PICKER).format(session.getStart());
+        this.end = this.dateTimeFormatter.withStyle(DateTimeStyle.DATE_TIME_PICKER).format(session.getEnd());
+
+        return INPUT;
     }
 
     private Session currentSession;

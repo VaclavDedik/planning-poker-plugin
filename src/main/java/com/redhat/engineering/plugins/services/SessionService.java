@@ -65,6 +65,15 @@ public class SessionService extends AbstractPokerService {
         return session;
     }
 
+    public void update(Session session) {
+        String storeKey = getIssueStoreKey(session.getIssue());
+        Properties sessionProps = (Properties) pluginSettings.get(storeKey);
+        sessionProps.setProperty("start", Long.toString(session.getStart().getTime()));
+        sessionProps.setProperty("end", Long.toString(session.getEnd().getTime()));
+
+        pluginSettings.put(storeKey, sessionProps);
+    }
+
     public void delete(Session session) {
         String storeKey = getIssueStoreKey(session.getIssue());
         pluginSettings.remove(storeKey);
