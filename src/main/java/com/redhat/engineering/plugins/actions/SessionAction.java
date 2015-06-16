@@ -212,6 +212,27 @@ public class SessionAction extends AbstractAction {
         return SUCCESS;
     }
 
+    public String doDelete() throws Exception {
+        Session session = getSessionObject();
+        if (!session.getAuthor().equals(authContext.getUser())) {
+            return ERROR;
+        }
+
+        sessionService.delete(session);
+        this.addMessage("Session for issue " + getKey() + " has been successfully deleted.");
+
+        return SUCCESS;
+    }
+
+    private Session currentSession;
+
+    private Session getSessionObject() {
+        if (currentSession == null) {
+            currentSession = sessionService.get(getKey());
+        }
+        return currentSession;
+    }
+
     private Issue getIssueObject() {
         IssueService.IssueResult issueResult = issueService.getIssue(getCurrentUser().getDirectoryUser(), getKey());
         if (!issueResult.isValid()) {

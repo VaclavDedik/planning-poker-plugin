@@ -51,5 +51,38 @@
                    href="${baseurl}/secure/PokerVote!viewVotes.jspa?key=$session.issue.key">View Votes</a>
             </dd>
         </dl>
+        #if ($pokerComponent.hasOwnerPermission($session))
+        <dl class="actions">
+            <dt>Actions:</dt>
+            <dd>
+                <a id="poker-edit" class="trigger-dialog"
+                   href="${baseurl}/secure/PokerSession!edit.jspa?key=$session.issue.key">Edit Session</a><span>, </span>
+                <a id="poker-delete" href="#">Delete Session</a>
+                <a id="poker-delete-link" style="display: none;" class="trigger-dialog"
+                   href="${baseurl}/secure/PokerSession!delete.jspa?key=$session.issue.key">Confirm Delete Session</a>
+                <script>
+                    var dialog = new AJS.Dialog({
+                        width:300,
+                        height:200,
+                        id:"poker-delete-dialog",
+                        closeOnOutsideClick: true
+                    });
+                    dialog.addHeader("Delete Session");
+                    dialog.addPanel("Panel 1", "<p>Are you sure you want to delete session $session.issue.key?</p>", "panel-body");
+                    dialog.addButton("Confirm", function (dialog) {
+                        dialog.hide();
+                        AJS.$("#poker-delete-link").click();
+                    });
+                    dialog.addLink("Cancel", function (dialog) {
+                        dialog.hide();
+                    }, "#");
+
+                    AJS.$("#poker-delete").click(function() {
+                        dialog.show();
+                    });
+                </script>
+            </dd>
+        </dl>
+        #end
     </li>
 </ul>

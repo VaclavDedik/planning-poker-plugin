@@ -115,4 +115,8 @@ public class PlanningPokerPanel implements WebPanel {
     public boolean hasVotePermission(Session session) {
         return permissionManager.hasPermission(Permissions.EDIT_ISSUE, session.getIssue(), authContext.getUser());
     }
+
+    public boolean hasOwnerPermission(Session session) {
+        return session.getAuthor().equals(authContext.getUser());
+    }
 }
