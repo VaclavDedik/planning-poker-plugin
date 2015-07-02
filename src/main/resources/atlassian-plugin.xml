@@ -19,6 +19,7 @@
         <resource type="download" name="planning-poker.css" location="/css/planning-poker.css"/>
         <resource type="download" name="planning-poker.js" location="/js/planning-poker.js"/>
         <resource type="download" name="images/" location="/images"/>
+        <resource type="download" name="jquery.shorten.js" location="/js/jquery.shorten.js"/>
         <context>planning-poker</context>
     </web-resource>
 
@@ -32,6 +33,7 @@
     <component key="sessionService" class="com.redhat.engineering.plugins.services.SessionService" />
     <component key="voteService" class="com.redhat.engineering.plugins.services.VoteService" />
     <component key="configService" class="com.redhat.engineering.plugins.services.ConfigService" />
+    <component key="groupService" class="com.redhat.engineering.plugins.services.GroupService" />
 
     <!-- web items -->
     <web-item name="New Poker Session" i18n-name-key="new-poker-link.name" key="new-poker-link"
@@ -85,6 +87,15 @@
                 <view name="input">/views/config/input.vm</view>
                 <view name="error">/views/error.vm</view>
                 <view name="success">/views/success.vm</view>
+            </action>
+        </actions>
+    </webwork1>
+    <webwork1 key="poker-picker-webwork" name="Poker Group Picker" i18n-name-key="poker-picker-webwork.name">
+        <actions>
+            <action name="com.redhat.engineering.plugins.actions.PokerGroupPickerAction" alias="PokerGroupPicker">
+                <view name="input">/views/picker/input.vm</view>
+                <view name="create">/views/picker/create.vm</view>
+                <view name="success">/views/picker/success.vm</view>
             </action>
         </actions>
     </webwork1>

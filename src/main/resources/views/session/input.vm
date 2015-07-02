@@ -65,10 +65,10 @@
             #dateTimePopup("end" "end-trigger" $dateTimeFormat $timeFormat)
             <div class="field-group">
                 <label for="notifyUserList">Notify Users</label>
-                <script language="JavaScript">
-                    function openMultiWindow(element)
+                <script type="text/javascript">
+                    function openMultiWindow(element, pickerName)
                     {
-                        var vWinUsers = window.open('$baseurl/secure/popups/UserPickerBrowser.jspa?formName=jiraform&multiSelect=true&element=' + element, 'UserPicker', 'status=yes,resizable=yes,top=100,left=200,width=700,height=750,scrollbars=yes');
+                        var vWinUsers = window.open('$baseurl/secure/' + pickerName + '.jspa?formName=jiraform&multiSelect=true&element=' + element, 'PokerGroupPicker', 'status=yes,resizable=yes,top=100,left=200,width=700,height=750,scrollbars=yes');
                         vWinUsers.opener = self;
                         vWinUsers.focus();
 
@@ -80,10 +80,9 @@
                     }
                 </script>
                 <textarea id="notifyUserList" name="notifyUserList" class="textarea"
-                          cols="40" rows="3">#if($notifyUserList)$notifyUserList#end</textarea>
-                <a href="javascript:openMultiWindow('notifyUserList');">
-                    <span class="aui-icon icon-userpicker" title="Select a user(s)"></span>
-                </a>
+                          cols="40" rows="3">#if($notifyUserList)$notifyUserList#end</textarea><br>
+                <a href="javascript:openMultiWindow('notifyUserList', 'UserPickerBrowser');">Select User(s)</a>,
+                <a href="javascript:openMultiWindow('notifyUserList', 'PokerGroupPicker');">Select Group</a>
                 #if ($errors.containsKey("notifyUserList"))
                     <div id="notifyUserList-errors" class="error" data-field="notifyUserList">$errors.get("notifyUserList")</div>
                 #end
@@ -99,7 +98,7 @@
         <div class="buttons">
             #if ($edit)
             <input accesskey="s" class="button" id="poker-session-submit"
-                   name="Edit Session" title="Press Ctrl+Alt+s to submit this form"
+                   name="Update Session" title="Press Ctrl+Alt+s to submit this form"
                    type="submit" value="Edit Session">
             #else
             <input accesskey="s" class="button" id="poker-session-submit"

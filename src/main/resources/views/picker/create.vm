@@ -1,0 +1,63 @@
+<html>
+<head>
+    #if($edit)
+    <title>Edit Poker Group</title>
+    #else
+    <title>Create New Poker Group</title>
+    #end
+    <meta name="decorator" content="issueaction" />
+</head>
+<body>
+<form action="PokerGroupPicker!save.jspa" id="create-poker-group" class="aui" method="post">
+    <div class="form-body">
+        #if($edit)
+        <h2 class="dialog-title">Edit Poker Group $name</h2>
+        #else
+        <h2 class="dialog-title">Create New Poker Group</h2>
+        #end
+        #foreach ($message in $flushedMessages)
+        <div class="aui-message warning"><span class="aui-icon icon-warning"></span>
+            $message
+        </div>
+        #end
+        <div class="content">
+            <div class="field-group">
+                <label for="name">Name</label>
+                <input id="name" name="name" class="text medium-field" type="text" value="#if($name)$name#end">
+                #if ($errors.containsKey("name"))
+                <div id="name-errors" class="error" data-field="name">$errors.get("name")</div>
+                #end
+            </div>
+            <div class="field-group">
+                <label for="userList">Users</label>
+                <textarea id="userList" name="userList" class="textarea"
+                          cols="40" rows="3">#if($userList)$userList#end</textarea>
+                #if ($errors.containsKey("userList"))
+                <div id="userList-errors" class="error" data-field="userList">$errors.get("userList")</div>
+                #end
+            </div>
+        </div>
+        <div class="hidden">
+            <input type="hidden" name="id" value="${id}" />
+            <input type="hidden" name="edit" value="${edit}" />
+        </div>
+    </div>
+
+    <div class="buttons-container form-footer">
+        <div class="buttons">
+            #if($edit)
+            <input accesskey="s" class="button" id="poker-group-edit-submit"
+                   name="Edit Group" title="Press Ctrl+Alt+s to submit this form"
+                   type="submit" value="Update Group">
+            #else
+            <input accesskey="s" class="button" id="poker-group-submit"
+                   name="Create Group" title="Press Ctrl+Alt+s to submit this form"
+                   type="submit" value="Create Group">
+            #end
+            <a accesskey="`" class="cancel" href="#" id="new-group-cancel"
+               title="Press Ctrl+Alt+` to cancel">Cancel</a>
+        </div>
+    </div>
+</form>
+</body>
+</html>

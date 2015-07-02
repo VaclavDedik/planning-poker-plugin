@@ -56,8 +56,8 @@
             <dt>Actions:</dt>
             <dd>
                 <a id="poker-edit" class="trigger-dialog"
-                   href="${baseurl}/secure/PokerSession!edit.jspa?key=$session.issue.key">Edit Session</a><span>, </span>
-                <a id="poker-delete" href="#">Delete Session</a>
+                   href="${baseurl}/secure/PokerSession!edit.jspa?key=$session.issue.key">Edit</a><span>, </span>
+                <a id="poker-delete" href="#">Delete</a>
                 <a id="poker-delete-link" style="display: none;" class="trigger-dialog"
                    href="${baseurl}/secure/PokerSession!delete.jspa?key=$session.issue.key">Confirm Delete Session</a>
                 <script>

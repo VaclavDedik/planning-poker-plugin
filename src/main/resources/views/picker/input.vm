@@ -1,0 +1,114 @@
+$webResourceManager.requireResource("com.redhat.engineering.plugins.planning-poker:planning-poker-resources")
+<html>
+<head>
+    <title>Poker Group Picker</title>
+    <meta name="decorator" content="atl.popup"/>
+    <script type="text/javascript">
+        function selectRadio(event, id) {
+            var $radio = AJS.$('#' + id);
+            $radio.click();
+        }
+
+        function select()
+        {
+            var value = AJS.$('.pokergroupform input[type=radio]:checked').parent().parent().find('.value').text()
+            var newVal = opener.AJS.$('#$element').val();
+            if (newVal != '') {
+                newVal += ', ' + value;
+            }
+            opener.AJS.$('#$element').val(newVal);
+            window.close();
+        }
+
+        function showDialog(id, name) {
+            var dialog = new AJS.Dialog({
+                width:300,
+                height:200,
+                id:"poker-group-delete-dialog",
+                closeOnOutsideClick: true
+            });
+            dialog.addHeader("Delete Poker Group " + id);
+            dialog.addPanel("Panel 1", "<p>Are you sure you want to delete group '" + name + "'?</p>", "panel-body");
+            dialog.addButton("Confirm", function (dialog) {
+                dialog.remove();
+                AJS.$("#poker-group-delete-link-" + id).click();
+            });
+            dialog.addLink("Cancel", function (dialog) {
+                dialog.remove();
+            }, "#");
+
+            dialog.show();
+        }
+
+        AJS.$(document).ready(function() {
+
+            AJS.$(".more").shorten({showChars: '40'});
+
+        });
+    </script>
+</head>
+<body>
+    <div id="page">
+        <section id="content" role="main">
+            <header class="aui-page-header">
+                <div class="aui-page-header-inner">
+                    <div class="aui-page-header-main">
+                        <h1>Pick Users by Poker Group</h1>
+                    </div>
+                </div>
+            </header>
+            <div class="aui-page-panel">
+                <div class="aui-page-pannel-inner">
+                    <section class="aui-page-panel-content">
+                        <form class="pokergroupform aui-group" name="selectorform" onsubmit="select()">
+                            <table class="aui aui-table-rowhover">
+                                <thead>
+                                <tr>
+                                    <th width="1%"></th>
+                                    <th width="25%">Name</th>
+                                    <th>Users</th>
+                                    <th width="15%">Actions</th>
+                                    <th class="hidden"></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                #if(!$groups.isEmpty())
+                                    #foreach($group in $groups)
+                                    <tr data-row-for="poker-group-${group.id}" title="Click to select">
+                                        <td><input data-group-select="true" type="radio" name="userchecks" value="${group.id}" id="group_${group.id}"></td>
+                                        <td class="value" onclick="selectRadio(event, 'group_${group.id}')">$group.name</td>
+                                        <td class="value" onclick="selectRadio(event, 'group_${group.id}')"><span class="more">$action.join($group.names)</span></td>
+                                        <td>
+                                            <a id="poker-group-edit-$group.id" class="trigger-dialog"
+                                               href="${baseurl}/secure/PokerGroupPicker!edit.jspa?id=$group.id">Edit</a>,
+                                            <a id="poker-group-delete-$group.id" href="javascript:showDialog($group.id, '$group.name')">Delete</a>
+                                            <a id="poker-group-delete-link-$group.id" style="display: none;" class="trigger-dialog"
+                                               href="${baseurl}/secure/PokerGroupPicker!delete.jspa?id=$group.id">Confirm Delete Poker Group</a>
+                                        </td>
+                                        <td class="hidden">
+                                            <div id="groupname_${group.id}" value="${group.id}" style="visibility: hidden"></div>
+                                        </td>
+                                    </tr>
+                                    #end
+                                    <tr><td colspan="5">
+                                        <a class="trigger-dialog" href="${baseurl}/secure/PokerGroupPicker!create.jspa">Create new group.</a>
+                                    </td></tr>
+                                #else
+                                    <tr><td colspan="5">There are no groups created. <a class="trigger-dialog" href="${baseurl}/secure/PokerGroupPicker!create.jspa">Create new group.</a></td></tr>
+                                #end
+
+                                </tbody>
+                            </table>
+                            <div class="buttons-container">
+                                <input id="multiselect-submit" class="aui-button" type="submit" value="Select">
+                            </div>
+                        </form>
+
+                    </section>
+                </div>
+            </div>
+        </section>
+    </div>
+</body>
+</html>
