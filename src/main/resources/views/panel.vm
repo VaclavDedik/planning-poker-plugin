@@ -30,6 +30,18 @@
 </ul>
 <ul class="item-details" id="poker-session-votes">
     <li>
+        <dl class="score">
+            <dt>Status:</dt>
+            <dd>
+                #if ($pokerComponent.getStatus($session) == "SCHEDULED")
+                <span class="aui-lozenge aui-lozenge-subtle aui-lozenge-complete">Scheduled</span>
+                #elseif ($pokerComponent.getStatus($session) == "IN_PROGRESS")
+                <span class="aui-lozenge aui-lozenge-subtle jira-issue-status-lozenge-yellow">In Progress</span>
+                #elseif ($pokerComponent.getStatus($session) == "FINISHED")
+                <span class="aui-lozenge aui-lozenge-subtle aui-lozenge-error">Finished</span>
+                #end
+            </dd>
+        </dl>
         <dl class="votes">
             <dt>Votes:</dt>
             <dd>
@@ -47,7 +59,7 @@
         <dl class="score">
             <dt>Result:</dt>
             <dd>
-                <a id="poker-vote" class="trigger-dialog"
+                <a id="poker-result" class="trigger-dialog"
                    href="${baseurl}/secure/PokerVote!viewVotes.jspa?key=$session.issue.key">View Votes</a>
             </dd>
         </dl>

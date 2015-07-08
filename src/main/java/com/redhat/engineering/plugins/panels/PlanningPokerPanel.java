@@ -17,6 +17,7 @@ import com.atlassian.plugin.web.model.WebPanel;
 import com.atlassian.templaterenderer.TemplateRenderer;
 import com.google.common.collect.Maps;
 import com.redhat.engineering.plugins.domain.Session;
+import com.redhat.engineering.plugins.domain.Status;
 import com.redhat.engineering.plugins.services.SessionService;
 import com.redhat.engineering.plugins.services.VoteService;
 import org.slf4j.Logger;
@@ -118,5 +119,9 @@ public class PlanningPokerPanel implements WebPanel {
 
     public boolean hasOwnerPermission(Session session) {
         return session.getAuthor().equals(authContext.getUser());
+    }
+
+    public Status getStatus(Session session) {
+        return this.sessionService.getStatus(session);
     }
 }
