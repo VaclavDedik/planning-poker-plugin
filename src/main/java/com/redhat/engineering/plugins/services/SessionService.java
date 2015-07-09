@@ -56,9 +56,10 @@ public class SessionService extends AbstractPokerService {
         if (allSessions == null) {
             allSessions = new ArrayList<String>();
         }
-        if (!allSessions.contains(session.getIssue().getKey())) {
-            allSessions.add(session.getIssue().getKey());
+        if (allSessions.contains(session.getIssue().getKey())) {
+            allSessions.remove(session.getIssue().getKey());
         }
+        allSessions.add(session.getIssue().getKey());
         pluginSettings.put(getKey() + ".all", allSessions);
     }
 
@@ -88,8 +89,12 @@ public class SessionService extends AbstractPokerService {
         List<String> allSessionKeys = (List<String>) pluginSettings.get(getKey() + ".all");
         List<Session> sessions = new ArrayList<Session>();
 
-        for (Integer i = offset; i < limit && i < allSessionKeys.size(); i++) {
-            String key = allSessionKeys.get(i);
+        if (allSessionKeys == null) {
+            return sessions;
+        }
+
+        for (Integer i = offset; i - offset < limit && i < allSessionKeys.size(); i++) {
+            String key = allSessionKeys.get((allSessionKeys.size() - 1) - i); // Start from the newest session
             Session session = this.get(key);
             if (session != null) {
                 sessions.add(session);

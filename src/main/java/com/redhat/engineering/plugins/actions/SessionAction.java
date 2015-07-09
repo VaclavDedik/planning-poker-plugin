@@ -248,7 +248,12 @@ public class SessionAction extends AbstractAction {
 
     public String doDelete() throws Exception {
         Session session = getSessionObject();
+        if (session == null) {
+            this.addErrorMessage("This session does not exist.");
+            return ERROR;
+        }
         if (!session.getAuthor().equals(authContext.getUser())) {
+            this.addErrorMessage("You must be the owner of the session to be able to delete it.");
             return ERROR;
         }
 

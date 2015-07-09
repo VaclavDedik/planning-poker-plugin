@@ -51,6 +51,12 @@
         <label>Planning Poker</label>
         <link linkId="poker-config-link.link">/secure/admin/PokerConfig!default.jspa</link>
     </web-item>
+    <web-item name="Poker Sessions" i18n-name-key="poker-sessions-link.name" key="poker-sessions-link"
+              section="system.top.navigation.bar" weight="1000">
+        <label>Poker Sessions</label>
+        <link linkId="poker-sessions-link-id">/secure/ShowPokerSessions.jspa</link>
+        <condition class="com.atlassian.jira.plugin.webfragment.conditions.UserLoggedInCondition"/>
+    </web-item>
 
     <!-- web pannels -->
     <web-panel key="planning-poker-panel" location="atl.jira.view.issue.right.context"
@@ -61,41 +67,34 @@
     </web-panel>
 
     <!-- webworks -->
-    <webwork1 key="new-poker-webwork" name="New Poker Session" i18n-name-key="new-poker-webwork.name">
+    <webwork1 key="planning-poker-webwork" name="Planning Poker" i18n-name-key="planning-poker-webwork.name">
         <actions>
-            <action name="com.redhat.engineering.plugins.actions.SessionAction" alias="PokerSession">
+            <action name="com.redhat.engineering.plugins.actions.SessionAction" alias="PokerSession" roles-required="use">
                 <view name="input">/views/session/input.vm</view>
                 <view name="error">/views/error.vm</view>
                 <view name="success">/views/success.vm</view>
             </action>
-        </actions>
-    </webwork1>
-    <webwork1 key="poker-vote-webwork" name="Planning Poker Vote" i18n-name-key="poker-vote-webwork.name">
-        <actions>
-            <action name="com.redhat.engineering.plugins.actions.VoteAction" alias="PokerVote">
+            <action name="com.redhat.engineering.plugins.actions.VoteAction" alias="PokerVote" roles-required="use">
                 <view name="input">/views/vote/input.vm</view>
                 <view name="error">/views/error.vm</view>
                 <view name="viewVotes">/views/vote/viewVotes.vm</view>
                 <view name="viewVoters">/views/vote/viewVoters.vm</view>
                 <view name="success">/views/success.vm</view>
             </action>
-        </actions>
-    </webwork1>
-    <webwork1 key="poker-config-webwork" name="Planning Poker Config" i18n-name-key="poker-config-webwork.name">
-        <actions>
-            <action name="com.redhat.engineering.plugins.actions.ConfigAction" alias="PokerConfig">
+            <action name="com.redhat.engineering.plugins.actions.ConfigAction" alias="PokerConfig" roles-required="use">
                 <view name="input">/views/config/input.vm</view>
                 <view name="error">/views/error.vm</view>
                 <view name="success">/views/success.vm</view>
             </action>
-        </actions>
-    </webwork1>
-    <webwork1 key="poker-picker-webwork" name="Poker Group Picker" i18n-name-key="poker-picker-webwork.name">
-        <actions>
-            <action name="com.redhat.engineering.plugins.actions.PokerGroupPickerAction" alias="PokerGroupPicker">
+            <action name="com.redhat.engineering.plugins.actions.PokerGroupPickerAction" alias="PokerGroupPicker" roles-required="use">
                 <view name="input">/views/picker/input.vm</view>
                 <view name="create">/views/picker/create.vm</view>
                 <view name="success">/views/picker/success.vm</view>
+            </action>
+            <action name="com.redhat.engineering.plugins.actions.ShowPokerSessionsAction" alias="ShowPokerSessions" roles-required="use">
+                <view name="list">/views/show/list.vm</view>
+                <view name="create">/views/error.vm</view>
+                <view name="success">/views/success.vm</view>
             </action>
         </actions>
     </webwork1>

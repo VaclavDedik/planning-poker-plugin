@@ -1,0 +1,70 @@
+<html>
+<head>
+    <title>Browse Planning Poker Sessions</title>
+    <meta name="decorator" content="alt.general"/>
+</head>
+<body>
+    <header class="aui-page-header">
+        <div class="aui-page-header-inner">
+            <div class="aui-page-header-main">
+                <h1>Browse Planning Poker Sessions</h1>
+            </div>
+        </div>
+    </header>
+    <!-- Scheduled, In Progress, Finished -->
+    <div class="aui-page-panel" id="pp-show-sessions" data-recent-boards="{&quot;views&quot;:[]}">
+        <div class="aui-page-panel-inner">
+            <section class="aui-page-panel-content" id="pp-main-content">
+                <div id="pp-sessions-table">
+                    <table class="aui sessions-table">
+                        <thead>
+                        <tr>
+                            <th>Issue key</th>
+                            <th>Issue summary</th>
+                            <th>Session status</th>
+                        </tr>
+                        </thead>
+                        <tbody class="boards-list">
+                        #if ($sessions.isEmpty())
+                        <tr>
+                            <td colspan="3">There are currently no poker sessions.</td>
+                        </tr>
+                        #else
+                        #foreach ($session in $sessions)
+                        <tr>
+                            <td><a href="${baseurl}/browse/${session.issue.key}"
+                                   title="Go to this issue">$session.issue.key</a></td>
+                            <td>$session.issue.summary</td>
+                            <td>
+                                #if ($action.getStatus($session) == "SCHEDULED")
+                                <span class="aui-lozenge aui-lozenge-subtle aui-lozenge-complete">Scheduled</span>
+                                #elseif ($action.getStatus($session) == "IN_PROGRESS")
+                                <span class="aui-lozenge aui-lozenge-subtle jira-issue-status-lozenge-yellow">In Progress</span>
+                                #elseif ($action.getStatus($session) == "FINISHED")
+                                <span class="aui-lozenge aui-lozenge-subtle aui-lozenge-error">Finished</span>
+                                #end
+                            </td>
+                        </tr>
+                        #end
+                        #end
+                        </tbody>
+                    </table>
+                </div>
+                <div class="pagination" id="pagination-container">
+                    <ol data-total="6" class="aui-nav aui-nav-pagination">
+                        <li class="aui-nav-previous"><a href="undefined&amp;page=0"
+                                                        aria-disabled="true">Previous</a></li>
+                        <li class="aui-nav-page aui-nav-selected">1</li>
+                        <li><a href="undefined&amp;page=2" data-page="2">2</a></li>
+                        <li><a href="undefined&amp;page=3" data-page="3">3</a></li>
+                        <li><a href="undefined&amp;page=4" data-page="4">4</a></li>
+                        <li><a href="undefined&amp;page=5" data-page="5">5</a></li>
+                        <li><a href="undefined&amp;page=6" data-page="6">6</a></li>
+                        <li class="aui-nav-next"><a href="undefined&amp;page=2" data-page="2">Next</a></li>
+                    </ol>
+                </div>
+            </section>
+        </div>
+    </div>
+</body>
+</html>
