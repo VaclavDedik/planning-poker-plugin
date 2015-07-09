@@ -130,7 +130,9 @@ public class PokerGroupPickerAction extends AbstractAction {
         Set<String> result = new HashSet<String>();
         if (!"".equals(getUserList())) {
             String[] rawResult = getUserList().split(",");
-            result.addAll(Arrays.asList(rawResult));
+            for (String r : rawResult) {
+                result.add(r.trim());
+            }
         }
 
         return result;

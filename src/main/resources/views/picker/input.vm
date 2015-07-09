@@ -11,10 +11,10 @@ $webResourceManager.requireResource("com.redhat.engineering.plugins.planning-pok
 
         function select()
         {
-            var value = AJS.$('.pokergroupform input[type=radio]:checked').parent().parent().find('.value').text()
-            var newVal = opener.AJS.$('#$element').val();
-            if (newVal != '') {
-                newVal += ', ' + value;
+            var newVal = AJS.$('.pokergroupform input[type=radio]:checked').val()
+            var oldVal = opener.AJS.$('#$element').val().trim();
+            if (oldVal != '') {
+                newVal += ', ' + oldVal;
             }
             opener.AJS.$('#$element').val(newVal);
             window.close();
@@ -76,7 +76,7 @@ $webResourceManager.requireResource("com.redhat.engineering.plugins.planning-pok
                                 #if(!$groups.isEmpty())
                                     #foreach($group in $groups)
                                     <tr data-row-for="poker-group-${group.id}" title="Click to select">
-                                        <td><input data-group-select="true" type="radio" name="userchecks" value="${group.id}" id="group_${group.id}"></td>
+                                        <td><input data-group-select="true" type="radio" name="userchecks" value="$action.join($group.names)" id="group_${group.id}"></td>
                                         <td class="value" onclick="selectRadio(event, 'group_${group.id}')">$group.name</td>
                                         <td class="value" onclick="selectRadio(event, 'group_${group.id}')"><span class="more">$action.join($group.names)</span></td>
                                         <td>
