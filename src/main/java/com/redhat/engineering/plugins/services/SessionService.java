@@ -104,6 +104,15 @@ public class SessionService extends AbstractPokerService {
         return sessions;
     }
 
+    public Integer count() {
+        List<String> allSessionKeys = (List<String>) pluginSettings.get(getKey() + ".all");
+
+        if (allSessionKeys == null) {
+            return 0;
+        }
+        return allSessionKeys.size();
+    }
+
     public void update(Session session) {
         String storeKey = getIssueStoreKey(session.getIssue());
         Properties sessionProps = (Properties) pluginSettings.get(storeKey);

@@ -1,3 +1,4 @@
+$webResourceManager.requireResource("com.redhat.engineering.plugins.planning-poker:planning-poker-resources")
 <html>
 <head>
     <title>Browse Planning Poker Sessions</title>
@@ -19,9 +20,9 @@
                     <table class="aui sessions-table">
                         <thead>
                         <tr>
-                            <th>Issue key</th>
-                            <th>Issue summary</th>
-                            <th>Session status</th>
+                            <th width="10%">Issue key</th>
+                            <th width="70%">Issue summary</th>
+                            <th width="20%">Session status</th>
                         </tr>
                         </thead>
                         <tbody class="boards-list">
@@ -50,19 +51,47 @@
                         </tbody>
                     </table>
                 </div>
+                #set($Integer = 0)
+                #set($intPage = $Integer.parseInt($page))
+                #if ($action.getPageCount() > 1)
                 <div class="pagination" id="pagination-container">
-                    <ol data-total="6" class="aui-nav aui-nav-pagination">
-                        <li class="aui-nav-previous"><a href="undefined&amp;page=0"
-                                                        aria-disabled="true">Previous</a></li>
-                        <li class="aui-nav-page aui-nav-selected">1</li>
-                        <li><a href="undefined&amp;page=2" data-page="2">2</a></li>
-                        <li><a href="undefined&amp;page=3" data-page="3">3</a></li>
-                        <li><a href="undefined&amp;page=4" data-page="4">4</a></li>
-                        <li><a href="undefined&amp;page=5" data-page="5">5</a></li>
-                        <li><a href="undefined&amp;page=6" data-page="6">6</a></li>
-                        <li class="aui-nav-next"><a href="undefined&amp;page=2" data-page="2">Next</a></li>
+                    <ol class="aui-nav aui-nav-pagination">
+                        #set($previous = $intPage - 1)
+                        #if($previous < 1)
+                        <li class="aui-nav-previous">
+                            <a href="#" aria-disabled="true">Previous</a>
+                        </li>
+                        #else
+                        <li class="aui-nav-previous">
+                            <a href="$baseurl/secure/ShowPokerSessions.jspa?page=$previous">Previous</a>
+                        </li>
+                        #end
+
+                        #foreach ($i in [1..$action.getPageCount()])
+                            #if ($i >= $intPage - 5 && $i <= $intPage + 5)
+                                #if($intPage == $i)
+                                <li class="aui-nav-page aui-nav-selected">$i</li>
+                                #else
+                                <li class="aui-nav-page">
+                                    <a href="$baseurl/secure/ShowPokerSessions.jspa?page=$i">$i</a>
+                                </li>
+                                #end
+                            #end
+                        #end
+
+                        #set($next = $intPage + 1)
+                        #if($next > $action.getPageCount())
+                        <li class="aui-nav-next">
+                            <a href="#" aria-disabled="true">Next</a>
+                        </li>
+                        #else
+                        <li class="aui-nav-next">
+                            <a href="$baseurl/secure/ShowPokerSessions.jspa?page=$next">Next</a>
+                        </li>
+                        #end
                     </ol>
                 </div>
+                #end
             </section>
         </div>
     </div>
