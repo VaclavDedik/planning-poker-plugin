@@ -6,6 +6,9 @@
 <body>
     <div class="form-body">
         <h2 class="dialog-title">View Votes</h2>
+        #if ($action.votes.isEmpty())
+        <p>No one has voted yet.</p>
+        #else
         #foreach($vote in $action.votes)
         <div class="module toggle-wrap">
             <div class="mod-header">
@@ -46,6 +49,7 @@
                 #end
             </div>
         </div>
+        #end
         #end
     </div>
 </body>

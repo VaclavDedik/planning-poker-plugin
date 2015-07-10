@@ -6,14 +6,14 @@
 <body>
 <div class="form-body">
     <h2 class="dialog-title">View Voters</h2>
-    #if ($action.voters)
+    #if (!$action.voters.isEmpty())
         <div class="people-details">
             #foreach($voter in $action.voters)
                 <div style="margin-bottom: 10px;">$action.getUserHtml($voter)</div>
             #end
         </div>
     #else
-        No voters.
+        <p>No one has voted.</p>
     #end
 </div>
 </body>
