@@ -64,7 +64,11 @@
             </div>
             #dateTimePopup("end" "end-trigger" $dateTimeFormat $timeFormat)
             <div class="field-group">
+                #if ($edit)
+                <label for="notifyUserList">Notify Additional Users</label>
+                #else
                 <label for="notifyUserList">Notify Users</label>
+                #end
                 <script type="text/javascript">
                     function openMultiWindow(element, pickerName)
                     {
