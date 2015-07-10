@@ -25,7 +25,7 @@
     } else {
         JIRA.Dialog.current.hide();
         var url = window.location.href;
-        AJS.$("body").load(url, function() {
+        AJS.$("#content").load(url + " #content", function() {
             #foreach($message in $flushedMessages)
             JIRA.Messages.showSuccessMsg('$message', {closeable: true});
             #end

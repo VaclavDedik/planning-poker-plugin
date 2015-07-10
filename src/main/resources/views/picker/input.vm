@@ -63,10 +63,11 @@ $webResourceManager.requireResource("com.redhat.engineering.plugins.planning-pok
                                                 <ul class="aui-list-truncate">
                                                     <li>
                                                         <a id="pp-group-edit-$group.id" class="trigger-dialog"
-                                                           href="${baseurl}/secure/PokerGroupPicker!edit.jspa?id=$group.id">Edit</a>
+                                                           href="${baseurl}/secure/PokerGroupPicker!edit.jspa?id=$group.id">Edit Group</a>
                                                     </li>
                                                     <li>
-                                                        <a id="pp-group-delete-$group.id" href="javascript:showDialog('pp-group-delete-$group.id', 'Delete Poker Group $group.name', 'Are you sure you want to delete group $group.name?')">Delete</a>
+                                                        <a id="pp-group-delete-$group.id" href="javascript:showDialog('pp-group-delete-$group.id', 'Delete Poker Group $group.name', 'Are you sure you want to delete group $group.name?')"
+                                                        >Delete Group</a>
                                                         <a id="pp-group-delete-${group.id}-link" style="display: none;" class="trigger-dialog"
                                                            href="${baseurl}/secure/PokerGroupPicker!delete.jspa?id=$group.id">Confirm Delete Poker Group</a>
                                                     </li>
