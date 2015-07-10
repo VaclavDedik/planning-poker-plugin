@@ -6,6 +6,7 @@
     #set ($voteLabel = "Vote")
 #end
 
+$webResourceManager.requireResource("com.redhat.engineering.plugins.planning-poker:planning-poker-resources")
 <ul class="item-details" id="poker-session-author">
     <li class="people-details">
         <dl>
@@ -50,51 +51,55 @@
                     <span id="poker-vote-data" class="aui-badge $voteState"
                             >$pokerComponent.getVotesSize($session)</span>
                 </a>
-                #if ($pokerComponent.hasVotePermission($session))
-                <a id="poker-vote" class="trigger-dialog"
-                   href="${baseurl}/secure/PokerVote!default.jspa?key=$session.issue.key">$voteLabel</a>
-                #end
             </dd>
         </dl>
-        <dl class="score">
-            <dt>Result:</dt>
-            <dd>
-                <a id="poker-result" class="trigger-dialog"
-                   href="${baseurl}/secure/PokerVote!viewVotes.jspa?key=$session.issue.key">View Votes</a>
-            </dd>
-        </dl>
-        #if ($pokerComponent.hasOwnerPermission($session))
-        <dl class="actions">
+    </li>
+</ul>
+<ul class="item-details" id="pp-session-action">
+    <li>
+        <dl class="pp-actions-link">
             <dt>Actions:</dt>
             <dd>
-                <a id="poker-edit" class="trigger-dialog"
-                   href="${baseurl}/secure/PokerSession!edit.jspa?key=$session.issue.key">Edit</a><span>, </span>
-                <a id="poker-delete" href="#">Delete</a>
-                <a id="poker-delete-link" style="display: none;" class="trigger-dialog"
-                   href="${baseurl}/secure/PokerSession!delete.jspa?key=$session.issue.key">Confirm Delete Session</a>
-                <script>
-                    var dialog = new AJS.Dialog({
-                        width:300,
-                        height:200,
-                        id:"poker-delete-dialog",
-                        closeOnOutsideClick: true
-                    });
-                    dialog.addHeader("Delete Session");
-                    dialog.addPanel("Panel 1", "<p>Are you sure you want to delete session $session.issue.key?</p>", "panel-body");
-                    dialog.addButton("Confirm", function (dialog) {
-                        dialog.hide();
-                        AJS.$("#poker-delete-link").click();
-                    });
-                    dialog.addLink("Cancel", function (dialog) {
-                        dialog.hide();
-                    }, "#");
-
-                    AJS.$("#poker-delete").click(function() {
-                        dialog.show();
-                    });
-                </script>
+                <a href="#" aria-haspopup="true" id="pp-actions-button" aria-owns="pp-actions-popup"
+                   class="aui-dropdown2-trigger aui-style-default">Select Action</a>
+                <div id="pp-actions-popup" class="aui-style-default aui-dropdown2">
+                    <ul class="aui-list-truncate">
+                        #if ($pokerComponent.hasVotePermission($session))
+                        <li>
+                            #if ($pokerComponent.getStatus($session) == "IN_PROGRESS")
+                            <a id="pp-vote-enabled" class="trigger-dialog"
+                               href="${baseurl}/secure/PokerVote!default.jspa?key=$session.issue.key">$voteLabel</a>
+                            #else
+                            <a id="pp-vote-disabled" class="trigger-dialog disabled" title="You cannot vote because the session hasn't started yet/already finished."
+                               href="${baseurl}/secure/PokerVote!default.jspa?key=$session.issue.key">$voteLabel</a>
+                            #end
+                        </li>
+                        #end
+                        <li>
+                            #if ($pokerComponent.getStatus($session) == "FINISHED")
+                            <a id="poker-result-enabled" class="trigger-dialog"
+                               href="${baseurl}/secure/PokerVote!viewVotes.jspa?key=$session.issue.key">View Votes</a>
+                            #else
+                            <a id="poker-result-disabled" class="trigger-dialog disabled" title="You cannot view votes because the session hasn't finished yet."
+                               href="${baseurl}/secure/PokerVote!viewVotes.jspa?key=$session.issue.key">View Votes</a>
+                            #end
+                        </li>
+                        #if ($pokerComponent.hasOwnerPermission($session))
+                        <li>
+                            <a id="pp-edit" class="trigger-dialog"
+                               href="${baseurl}/secure/PokerSession!edit.jspa?key=$session.issue.key">Edit Session</a>
+                        </li>
+                        <li>
+                            <a id="pp-session-delete"
+                               href="javascript:showDialog('pp-session-delete', 'Confirm Delete Session ${session.issue.key}', 'Are you sure you want to delete group $session.issue.key?')"
+                            >Delete Session</a>
+                            <a id="pp-session-delete-link" style="display: none;" class="trigger-dialog"
+                               href="${baseurl}/secure/PokerSession!delete.jspa?key=$session.issue.key">Confirm Delete Session</a>
+                        </li>
+                        #end
+                    </ul>
+                </div>
             </dd>
         </dl>
-        #end
     </li>
 </ul>

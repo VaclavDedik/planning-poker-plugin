@@ -13,14 +13,24 @@
     </div>
 </div>
 <script type="text/javascript">
-    #foreach($message in $flushedMessages)
-    JIRA.Messages.showMsgOnReload("$message", {
-        type: "SUCCESS",
-        closeable: true
-    });
-    #end
-    JIRA.Dialog.current.hide();
-    JIRA.trigger(JIRA.Events.REFRESH_ISSUE_PAGE, [JIRA.Issue.getIssueId()]);
+    if (JIRA.Issue.getIssueId()) {
+        #foreach($message in $action.getFlushedMessages(true))
+        JIRA.Messages.showMsgOnReload("$message", {
+            type: "SUCCESS",
+            closeable: true
+        });
+        #end
+        JIRA.Dialog.current.hide();
+        JIRA.trigger(JIRA.Events.REFRESH_ISSUE_PAGE, [JIRA.Issue.getIssueId()]);
+    } else {
+        JIRA.Dialog.current.hide();
+        var url = window.location.href;
+        AJS.$("body").load(url, function() {
+            #foreach($message in $flushedMessages)
+            JIRA.Messages.showSuccessMsg('$message', {closeable: true});
+            #end
+        });
+    }
 </script>
 </body>
 </html>

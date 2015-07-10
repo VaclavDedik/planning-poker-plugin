@@ -6,3 +6,11 @@
   background-color: #3b73af;
   color: #ffffff;
 }
+
+.pp-actions .aui-button.aui-dropdown2-trigger:after {
+  display: none;
+}
+
+.pp-actions .aui-button.aui-dropdown2-trigger {
+  padding-right: 10px !important;
+}

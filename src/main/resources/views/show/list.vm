@@ -21,9 +21,11 @@ $webResourceManager.requireResource("com.redhat.engineering.plugins.planning-pok
                         <thead>
                         <tr>
                             <th width="10%">Issue key</th>
-                            <th width="60%">Issue summary</th>
-                            <th width="20%">Session status</th>
-                            <th width="10%">Votes</th>
+                            <th width="50%">Issue summary</th>
+                            <th width="15%">Author</th>
+                            <th width="15%">Session status</th>
+                            <th width="5%">Votes</th>
+                            <th width="5%">Actions</th>
                         </tr>
                         </thead>
                         <tbody class="boards-list">
@@ -45,6 +47,9 @@ $webResourceManager.requireResource("com.redhat.engineering.plugins.planning-pok
                                    title="Go to this issue">$session.issue.key</a></td>
                             <td>$session.issue.summary</td>
                             <td>
+                                <a href="${baseurl}/secure/ViewProfile.jspa?name=${session.author.name}" id="pp-list-author">$session.author.displayName</a>
+                            </td>
+                            <td>
                                 #if ($action.getStatus($session) == "SCHEDULED")
                                 <span class="aui-lozenge aui-lozenge-subtle aui-lozenge-complete">Scheduled</span>
                                 #elseif ($action.getStatus($session) == "IN_PROGRESS")
@@ -59,6 +64,50 @@ $webResourceManager.requireResource("com.redhat.engineering.plugins.planning-pok
                                     <span id="poker-vote-data" class="aui-badge $voteState"
                                     >$action.getVotesSize($session)</span>
                                 </a>
+                            </td>
+                            <td class="pp-actions">
+                                <button aria-haspopup="true" id="pp-actions-button-${session.issue.key}"
+                                        aria-owns="pp-actions-popup-${session.issue.key}"
+                                        class="aui-dropdown2-trigger aui-style-default aui-button aui-button-subtle">
+                                    <span class="aui-icon aui-icon-small aui-iconfont-more"></span>
+                                </button>
+                                <div id="pp-actions-popup-${session.issue.key}" class="aui-style-default aui-dropdown2">
+                                    <ul class="aui-list-truncate">
+                                        #if ($action.hasVotePermission($session))
+                                        <li>
+                                            #if ($action.getStatus($session) == "IN_PROGRESS")
+                                            <a id="pp-vote-enabled-${session.issue.key}" class="trigger-dialog"
+                                               href="${baseurl}/secure/PokerVote!default.jspa?key=$session.issue.key">$voteLabel</a>
+                                            #else
+                                            <a id="pp-vote-disabled-${session.issue.key}" class="trigger-dialog disabled" title="You cannot vote because the session hasn't started yet/already finished."
+                                               href="${baseurl}/secure/PokerVote!default.jspa?key=$session.issue.key">$voteLabel</a>
+                                            #end
+                                        </li>
+                                        #end
+                                        <li>
+                                            #if ($action.getStatus($session) == "FINISHED")
+                                            <a id="poker-result-enabled-${session.issue.key}" class="trigger-dialog"
+                                               href="${baseurl}/secure/PokerVote!viewVotes.jspa?key=$session.issue.key">View Votes</a>
+                                            #else
+                                            <a id="poker-result-disabled-${session.issue.key}" class="trigger-dialog disabled" title="You cannot view votes because the session hasn't finished yet."
+                                               href="${baseurl}/secure/PokerVote!viewVotes.jspa?key=$session.issue.key">View Votes</a>
+                                            #end
+                                        </li>
+                                        #if ($action.hasOwnerPermission($session))
+                                        <li>
+                                            <a id="pp-edit-${session.issue.key}" class="trigger-dialog"
+                                               href="${baseurl}/secure/PokerSession!edit.jspa?key=$session.issue.key">Edit Session</a>
+                                        </li>
+                                        <li>
+                                            <a id="pp-session-delete-${session.issue.key}"
+                                               href="javascript:showDialog('pp-session-delete-${session.issue.key}', 'Confirm Delete Session ${session.issue.key}', 'Are you sure you want to delete group $session.issue.key?')"
+                                            >Delete Session</a>
+                                            <a id="pp-session-delete-${session.issue.key}-link" style="display: none;" class="trigger-dialog"
+                                               href="${baseurl}/secure/PokerSession!delete.jspa?key=$session.issue.key">Confirm Delete Session</a>
+                                        </li>
+                                        #end
+                                    </ul>
+                                </div>
                             </td>
                         </tr>
                         #end

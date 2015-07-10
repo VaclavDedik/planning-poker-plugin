@@ -1,6 +1,8 @@
 package com.redhat.engineering.plugins.actions;
 
 import com.atlassian.jira.security.JiraAuthenticationContext;
+import com.atlassian.jira.security.PermissionManager;
+import com.atlassian.jira.security.Permissions;
 import com.redhat.engineering.plugins.domain.Session;
 import com.redhat.engineering.plugins.domain.Status;
 import com.redhat.engineering.plugins.services.SessionService;
@@ -17,6 +19,7 @@ public class ShowPokerSessionsAction extends AbstractAction {
     private final SessionService sessionService;
     private final JiraAuthenticationContext authContext;
     private final VoteService voteService;
+    private final PermissionManager permissionManager;
 
     //props
     private List<Session> sessions;
@@ -24,10 +27,11 @@ public class ShowPokerSessionsAction extends AbstractAction {
     private Integer pageCount;
 
     public ShowPokerSessionsAction(SessionService sessionService, JiraAuthenticationContext authContext,
-                                   VoteService voteService) {
+                                   VoteService voteService, PermissionManager permissionManager) {
         this.sessionService = sessionService;
         this.authContext = authContext;
         this.voteService = voteService;
+        this.permissionManager = permissionManager;
     }
 
     public String getPage() {
@@ -69,5 +73,13 @@ public class ShowPokerSessionsAction extends AbstractAction {
 
     public Integer getVotesSize(Session session) {
         return voteService.getVoteValsBySession(session).size();
+    }
+
+    public boolean hasOwnerPermission(Session session) {
+        return session.getAuthor().equals(authContext.getUser());
+    }
+
+    public boolean hasVotePermission(Session session) {
+        return permissionManager.hasPermission(Permissions.EDIT_ISSUE, session.getIssue(), authContext.getUser());
     }
 }

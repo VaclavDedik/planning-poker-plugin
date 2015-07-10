@@ -89,7 +89,7 @@
             <action name="com.redhat.engineering.plugins.actions.PokerGroupPickerAction" alias="PokerGroupPicker" roles-required="use">
                 <view name="input">/views/picker/input.vm</view>
                 <view name="create">/views/picker/create.vm</view>
-                <view name="success">/views/picker/success.vm</view>
+                <view name="success">/views/success.vm</view>
             </action>
             <action name="com.redhat.engineering.plugins.actions.ShowPokerSessionsAction" alias="ShowPokerSessions" roles-required="use">
                 <view name="list">/views/show/list.vm</view>

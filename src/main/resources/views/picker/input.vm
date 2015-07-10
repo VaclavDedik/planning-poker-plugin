@@ -19,32 +19,6 @@ $webResourceManager.requireResource("com.redhat.engineering.plugins.planning-pok
             opener.AJS.$('#$element').val(newVal);
             window.close();
         }
-
-        function showDialog(id, name) {
-            var dialog = new AJS.Dialog({
-                width:300,
-                height:200,
-                id:"poker-group-delete-dialog",
-                closeOnOutsideClick: true
-            });
-            dialog.addHeader("Delete Poker Group " + id);
-            dialog.addPanel("Panel 1", "<p>Are you sure you want to delete group '" + name + "'?</p>", "panel-body");
-            dialog.addButton("Confirm", function (dialog) {
-                dialog.remove();
-                AJS.$("#poker-group-delete-link-" + id).click();
-            });
-            dialog.addLink("Cancel", function (dialog) {
-                dialog.remove();
-            }, "#");
-
-            dialog.show();
-        }
-
-        AJS.$(document).ready(function() {
-
-            AJS.$(".more").shorten({showChars: '40'});
-
-        });
     </script>
 </head>
 <body>
@@ -79,12 +53,25 @@ $webResourceManager.requireResource("com.redhat.engineering.plugins.planning-pok
                                         <td><input data-group-select="true" type="radio" name="userchecks" value="$action.join($group.names)" id="group_${group.id}"></td>
                                         <td class="value" onclick="selectRadio(event, 'group_${group.id}')">$group.name</td>
                                         <td class="value" onclick="selectRadio(event, 'group_${group.id}')"><span class="more">$action.join($group.names)</span></td>
-                                        <td>
-                                            <a id="poker-group-edit-$group.id" class="trigger-dialog"
-                                               href="${baseurl}/secure/PokerGroupPicker!edit.jspa?id=$group.id">Edit</a>,
-                                            <a id="poker-group-delete-$group.id" href="javascript:showDialog($group.id, '$group.name')">Delete</a>
-                                            <a id="poker-group-delete-link-$group.id" style="display: none;" class="trigger-dialog"
-                                               href="${baseurl}/secure/PokerGroupPicker!delete.jspa?id=$group.id">Confirm Delete Poker Group</a>
+                                        <td class="pp-actions">
+                                            <button aria-haspopup="true" id="pp-group-actions-button-${group.id}"
+                                                    aria-owns="pp-group-actions-popup-${group.id}"
+                                                    class="aui-dropdown2-trigger aui-style-default aui-button aui-button-subtle">
+                                                <span class="aui-icon aui-icon-small aui-iconfont-more"></span>
+                                            </button>
+                                            <div id="pp-group-actions-popup-${group.id}" class="aui-style-default aui-dropdown2">
+                                                <ul class="aui-list-truncate">
+                                                    <li>
+                                                        <a id="pp-group-edit-$group.id" class="trigger-dialog"
+                                                           href="${baseurl}/secure/PokerGroupPicker!edit.jspa?id=$group.id">Edit</a>
+                                                    </li>
+                                                    <li>
+                                                        <a id="pp-group-delete-$group.id" href="javascript:showDialog('pp-group-delete-$group.id', 'Delete Poker Group $group.name', 'Are you sure you want to delete group $group.name?')">Delete</a>
+                                                        <a id="pp-group-delete-${group.id}-link" style="display: none;" class="trigger-dialog"
+                                                           href="${baseurl}/secure/PokerGroupPicker!delete.jspa?id=$group.id">Confirm Delete Poker Group</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
                                         </td>
                                         <td class="hidden">
                                             <div id="groupname_${group.id}" value="${group.id}" style="visibility: hidden"></div>
