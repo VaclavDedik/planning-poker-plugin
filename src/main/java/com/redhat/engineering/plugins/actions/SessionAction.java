@@ -14,6 +14,7 @@ import com.atlassian.mail.queue.SingleMailQueueItem;
 import com.atlassian.templaterenderer.TemplateRenderer;
 import com.google.common.collect.Maps;
 import com.redhat.engineering.plugins.domain.Session;
+import com.redhat.engineering.plugins.domain.Status;
 import com.redhat.engineering.plugins.exceptions.UserNotFoundException;
 import com.redhat.engineering.plugins.services.SessionService;
 import org.slf4j.Logger;
@@ -134,6 +135,12 @@ public class SessionAction extends AbstractAction {
 
         Session session = sessionService.get(issue.getKey());
         if (session != null) {
+            if (sessionService.getStatus(session) != Status.FINISHED) {
+                addErrorMessage("There already is a created session that hasn't finished yet. " +
+                        "Ask the owner to delete it or wait until current session ends.");
+                return ERROR;
+            }
+
             addMessage("There is already a poker session created. " +
                     "Creating a new session will delete the old one with all its data (votes).");
         }
