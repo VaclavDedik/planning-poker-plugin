@@ -4,6 +4,7 @@ import com.atlassian.jira.security.JiraAuthenticationContext;
 import com.redhat.engineering.plugins.domain.Session;
 import com.redhat.engineering.plugins.domain.Status;
 import com.redhat.engineering.plugins.services.SessionService;
+import com.redhat.engineering.plugins.services.VoteService;
 
 import java.util.List;
 
@@ -15,15 +16,18 @@ public class ShowPokerSessionsAction extends AbstractAction {
 
     private final SessionService sessionService;
     private final JiraAuthenticationContext authContext;
+    private final VoteService voteService;
 
     //props
     private List<Session> sessions;
     private String page = "1";
     private Integer pageCount;
 
-    public ShowPokerSessionsAction(SessionService sessionService, JiraAuthenticationContext authContext) {
+    public ShowPokerSessionsAction(SessionService sessionService, JiraAuthenticationContext authContext,
+                                   VoteService voteService) {
         this.sessionService = sessionService;
         this.authContext = authContext;
+        this.voteService = voteService;
     }
 
     public String getPage() {
@@ -57,5 +61,13 @@ public class ShowPokerSessionsAction extends AbstractAction {
             pageCount = (int) Math.ceil(this.sessionService.count() / (float) PAGE_COUNT);
         }
         return pageCount;
+    }
+
+    public Boolean isVoter(Session session) {
+        return voteService.isVoter(session, authContext.getUser());
+    }
+
+    public Integer getVotesSize(Session session) {
+        return voteService.getVoteValsBySession(session).size();
     }
 }

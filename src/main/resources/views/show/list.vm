@@ -21,8 +21,9 @@ $webResourceManager.requireResource("com.redhat.engineering.plugins.planning-pok
                         <thead>
                         <tr>
                             <th width="10%">Issue key</th>
-                            <th width="70%">Issue summary</th>
+                            <th width="60%">Issue summary</th>
                             <th width="20%">Session status</th>
+                            <th width="10%">Votes</th>
                         </tr>
                         </thead>
                         <tbody class="boards-list">
@@ -32,6 +33,13 @@ $webResourceManager.requireResource("com.redhat.engineering.plugins.planning-pok
                         </tr>
                         #else
                         #foreach ($session in $sessions)
+                        #if ($action.isVoter($session))
+                            #set ($voteState = "vote-state-on")
+                            #set ($voteLabel = "Edit Vote")
+                        #else
+                            #set ($voteState = "vote-state-off")
+                            #set ($voteLabel = "Vote")
+                        #end
                         <tr>
                             <td><a href="${baseurl}/browse/${session.issue.key}"
                                    title="Go to this issue">$session.issue.key</a></td>
@@ -44,6 +52,13 @@ $webResourceManager.requireResource("com.redhat.engineering.plugins.planning-pok
                                 #elseif ($action.getStatus($session) == "FINISHED")
                                 <span class="aui-lozenge aui-lozenge-subtle aui-lozenge-error">Finished</span>
                                 #end
+                            </td>
+                            <td>
+                                <a id="poker-view-voter-list" title="View Poker Voters" class="trigger-dialog"
+                                   href="${baseurl}/secure/PokerVote!viewVoters.jspa?key=$session.issue.key">
+                                    <span id="poker-vote-data" class="aui-badge $voteState"
+                                    >$action.getVotesSize($session)</span>
+                                </a>
                             </td>
                         </tr>
                         #end

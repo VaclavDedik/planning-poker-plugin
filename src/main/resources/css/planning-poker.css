@@ -1,3 +1,8 @@
 #pp-sessions-table {
     margin-bottom: 10px;
 }
+
+.aui-badge.vote-state-on, .aui-badge.watch-state-on {
+  background-color: #3b73af;
+  color: #ffffff;
+}
