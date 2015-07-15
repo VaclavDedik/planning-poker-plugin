@@ -85,7 +85,7 @@
                 </script>
                 <textarea id="notifyUserList" name="notifyUserList" class="textarea"
                           cols="40" rows="3">#if($notifyUserList)$notifyUserList#end</textarea><br>
-                <a href="javascript:openMultiWindow('notifyUserList', 'UserPickerBrowser');">Select User(s)</a>,
+                <a href="javascript:openMultiWindow('notifyUserList', 'popups/UserPickerBrowser');">Select User(s)</a>,
                 <a href="javascript:openMultiWindow('notifyUserList', 'PokerGroupPicker');">Select Group</a>
                 #if ($errors.containsKey("notifyUserList"))
                     <div id="notifyUserList-errors" class="error" data-field="notifyUserList">$errors.get("notifyUserList")</div>

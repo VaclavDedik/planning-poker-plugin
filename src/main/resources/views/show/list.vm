@@ -31,7 +31,7 @@ $webResourceManager.requireResource("com.redhat.engineering.plugins.planning-pok
                         <tbody class="boards-list">
                         #if ($sessions.isEmpty())
                         <tr>
-                            <td colspan="3">There are currently no poker sessions.</td>
+                            <td colspan="6">There are currently no poker sessions.</td>
                         </tr>
                         #else
                         #foreach ($session in $sessions)

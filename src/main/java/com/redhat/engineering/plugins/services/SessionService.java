@@ -127,8 +127,10 @@ public class SessionService extends AbstractPokerService {
         pluginSettings.remove(storeKey);
 
         List<String> allSessions = (List<String>) pluginSettings.get(getKey() + ".all");
-        allSessions.remove(session.getIssue().getKey());
-        pluginSettings.put(getKey() + ".all", allSessions);
+        if (allSessions != null) {
+            allSessions.remove(session.getIssue().getKey());
+            pluginSettings.put(getKey() + ".all", allSessions);
+        }
     }
 
     public Status getStatus(Session session) {
