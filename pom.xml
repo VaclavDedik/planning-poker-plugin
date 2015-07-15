@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.redhat.engineering.plugins</groupId>
     <artifactId>planning-poker</artifactId>
-    <version>1.1</version>
+    <version>1.1.1</version>
     <organization>
         <name>Red Hat, Inc.</name>
         <url>http://www.redhat.com</url>
