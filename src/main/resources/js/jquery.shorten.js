@@ -9,7 +9,7 @@
   */
 
  (function($) {
-    $.fn.shorten = function (settings) {
+    $.fn.collapseText = function (settings) { // rename shorten to collapseText, otherwise conflict
 
         var config = {
             showChars: 100,

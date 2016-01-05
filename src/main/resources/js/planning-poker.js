@@ -19,5 +19,5 @@ function showDialog(id, title, message) {
 }
 
 AJS.$(document).ready(function() {
-    AJS.$(".more").shorten({showChars: '40'});
+    AJS.$(".more").collapseText({showChars: '40'});
 });
