@@ -4,3 +4,5 @@ target
 .DS_store
 .project
 .settings
+.vscode/settings.json
+.classpath
